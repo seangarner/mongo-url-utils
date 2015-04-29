@@ -1,0 +1,7 @@
+node_modules
+npm-debug.log
+
+# compiled parsers
+lib/fields.js
+lib/query.js
+lib/sort.js

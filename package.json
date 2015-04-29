@@ -1,0 +1,30 @@
+{
+  "name": "mongo-url",
+  "version": "0.0.1",
+  "description": "utilities to convert url params to mongo query objects",
+  "main": "lib/mongo-url.js",
+  "scripts": {
+    "test": "mocha test",
+    "build": "node ./build.js"
+  },
+  "keywords": [
+    "mongo",
+    "mongodb",
+    "url",
+    "query",
+    "parser",
+    "parse",
+    "peg",
+    "pegjs"
+  ],
+  "author": "Sean Garner",
+  "license": "MIT",
+  "dependencies": {
+    "is": "^3.0.1"
+  },
+  "devDependencies": {
+    "pegjs": "^0.8.0",
+    "chai": "^2.2.0",
+    "mocha": "^2.2.1"
+  }
+}
