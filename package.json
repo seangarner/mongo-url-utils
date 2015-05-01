@@ -1,11 +1,18 @@
 {
-  "name": "mongo-url",
+  "name": "mongo-url-utils",
   "version": "0.0.1",
   "description": "utilities to convert url params to mongo query objects",
   "main": "lib/mongo-url.js",
   "scripts": {
-    "test": "mocha test",
-    "build": "node ./build.js"
+    "test": "make test",
+    "prepublish": "make release"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seangarner/mongo-url-utils.git"
+  },
+  "bugs": {
+    "url": "https://github.com/seangarner/mongo-url-utils/issues"
   },
   "keywords": [
     "mongo",
@@ -17,7 +24,7 @@
     "peg",
     "pegjs"
   ],
-  "author": "Sean Garner",
+  "author": "Sean Garner <seanlgarner@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "is": "^3.0.1"

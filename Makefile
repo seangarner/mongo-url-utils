@@ -48,7 +48,6 @@ dev:
 	@echo -----------------------
 	@echo - INSTALLING DEV DEPS -
 	@echo -----------------------
-	rm -Rf ./node_modules
 	$(NPM) install
 
 lint:
@@ -61,5 +60,7 @@ lint:
 	@echo - LINTING TESTS -
 	@echo -----------------
 	$(NODE) $(JSHINT) $(TESTS)
+
+release: lint build test integration-test
 
 .PHONY: dev lint test test-dev integration-test build build-dev
