@@ -71,6 +71,7 @@
     "street": "Gibson Road",
     "zipcode": "10318"
   },
+  "closed": true,
   "borough": "Bedfordshire",
   "cuisine": "Bakery",
   "grades": [
@@ -150,8 +151,9 @@
     "street": "Weimann Parkways",
     "zipcode": "11853-9748"
   },
+  "closed": false,
   "borough": "Bedfordshire",
-  "cuisine": "Bakery",
+  "cuisine": null,
   "grades": [
     {
       "date": "2015-04-28T10:51:15.457Z",
@@ -210,7 +212,7 @@
   "address": {
     "building": "056 Lina Springs",
     "coord": [
-      "0.9209",
+      "-47.9327",
       "108.7421"
     ],
     "street": "Kunde Oval",
