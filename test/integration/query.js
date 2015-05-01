@@ -33,7 +33,7 @@ var tests = [
 
 var expect = require('chai').expect;
 var MongoClient = require('mongodb').MongoClient;
-var mongoUrl = require('..');
+var mongoUrl = require('../..');
 var query = mongoUrl.query;
 
 const URL = process.env.MONGO_URL || 'mongodb://localhost:27017/test?nativeParser=false';
@@ -56,9 +56,9 @@ after(function (done) {
   docs.drop(done);
 });
 
-describe.only('mongodb integration:', function() {
+describe('mongodb integration:', function() {
 
-  var data = require('./assets/test_data.json');
+  var data = require('../assets/test_data.json');
   data.forEach(function (doc) {
     before(function (done) {
       docs.insert(doc, done);
