@@ -61,6 +61,6 @@ lint:
 	@echo -----------------
 	$(NODE) $(JSHINT) $(TESTS)
 
-release: lint build test integration-test
+release: lint build test
 
 .PHONY: dev lint test test-dev integration-test build build-dev
