@@ -56,7 +56,7 @@ after(function (done) {
   docs.drop(done);
 });
 
-describe('integration test query:', function() {
+describe('query integration test:', function() {
 
   var data = require('../assets/test_data.json');
   before(function (done) {
