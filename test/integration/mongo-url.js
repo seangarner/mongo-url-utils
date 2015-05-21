@@ -37,6 +37,10 @@ var tests = [
       offset: '2'
     },
     [3,4]
+  ],
+  [
+    'q=gt(id,1)&limit=2',
+    [2,3]
   ]
 ];
 
