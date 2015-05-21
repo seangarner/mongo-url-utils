@@ -56,13 +56,11 @@ after(function (done) {
   docs.drop(done);
 });
 
-describe('mongodb integration:', function() {
+describe('integration test query:', function() {
 
   var data = require('../assets/test_data.json');
-  data.forEach(function (doc) {
-    before(function (done) {
-      docs.insert(doc, done);
-    });
+  before(function (done) {
+    docs.insert(data, done);
   });
 
   tests.forEach(function (test) {
