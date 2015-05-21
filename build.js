@@ -1,7 +1,7 @@
 var fs = require('fs');
 var peg = require('pegjs');
 
-var files = ['sort', 'fields', 'query'];
+var files = ['query'];
 
 var opts = {
   output: 'source',

@@ -1,7 +1,7 @@
 {
   "name": "mongo-url-utils",
   "version": "0.0.1",
-  "description": "utilities to convert url params to mongo query objects",
+  "description": "opinionated jsonapi url parser utilities for connecting with mongodb",
   "main": "lib/mongo-url.js",
   "scripts": {
     "test": "make test",
@@ -17,6 +17,7 @@
   "keywords": [
     "mongo",
     "mongodb",
+    "jsonapi",
     "url",
     "query",
     "parser",
@@ -27,7 +28,8 @@
   "author": "Sean Garner <seanlgarner@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "is": "^3.0.1"
+    "is": "^3.0.1",
+    "jsonapi-mongo-parsers": "^0.1.0"
   },
   "devDependencies": {
     "chai": "^2.2.0",
