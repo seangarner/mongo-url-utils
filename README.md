@@ -1,4 +1,4 @@
-# mongo-url
+# mongo-url-utils
 
 [![Build Status](https://travis-ci.org/seangarner/mongo-url-utils.svg?branch=master)](https://travis-ci.org/seangarner/mongo-url-utils)
 
