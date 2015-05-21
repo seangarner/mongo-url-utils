@@ -32,7 +32,7 @@ test:
 	@echo -----------------
 	$(NODE) $(MOCHA) --reporter $(REPORTER) $(TESTS)
 
-integration-test: build
+integration-test:
 	@echo --------------------------------------------
 	@echo - RUNNING INTEGRATION TESTS requires mongo -
 	@echo --------------------------------------------
