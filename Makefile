@@ -26,7 +26,7 @@ build-dev:
 	@echo ---------------------------------------------------------
 	$(NODE) $(NODEMON) --ext pegjs --watch src --exec node ./build.js
 
-test: build
+test:
 	@echo -----------------
 	@echo - RUNNING TESTS -
 	@echo -----------------

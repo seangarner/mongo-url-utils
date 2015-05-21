@@ -4,7 +4,7 @@
   "description": "opinionated jsonapi url parser utilities for connecting with mongodb",
   "main": "lib/mongo-url.js",
   "scripts": {
-    "test": "make test",
+    "test": "make release",
     "prepublish": "make release"
   },
   "repository": {
