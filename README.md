@@ -60,6 +60,27 @@ mongoUrlUtils('q=gt(age,21)&sort=-age');
 // }
 ```
 
+
+## `findIn`
+Sugar to parse a url or params and pass to mongo `find` method of a collection.  Returns a cursor.
+```js
+var people = db.collection('people');
+mongoUrlUtils.findIn(people, 'q=eq(id,3)').toArray(function (err, docs) {
+  // ...
+});
+```
+
+
+## `findOneIn`
+Sugar to parse a url or params and pass to mongo `findOne` method of a collection.
+```js
+var people = db.collection('people');
+mongoUrlUtils.findOneIn(people, 'q=eq(id,3)', function (err, person) {
+  // ...
+});
+```
+
+
 ## find operators
 A find string is made up of any of the `query`, `sort`, `fields`, `limit` and `offset` operators.
 
