@@ -5,6 +5,7 @@ INTEGRATION_TESTS = test/integration
 NAME ?= $(shell node -e 'console.log(require("./package.json").name)')
 VERSION ?= $(shell node -e 'console.log(require("./package.json").version)')
 
+PEGJS = node_modules/pegjs/bin/pegjs
 NODE ?= $(shell which node)
 NPM ?= $(shell which npm)
 JSHINT ?= node_modules/jshint/bin/jshint
@@ -18,13 +19,16 @@ build:
 	@echo -----------------------------
 	@echo - BUILDING PARSERS FROM SRC -
 	@echo -----------------------------
-	$(NODE) ./build.js
+	$(PEGJS) --optimize speed src/query.pegjs lib/query.js
+	$(PEGJS) --optimize speed src/fields.pegjs lib/fields.js
+	$(PEGJS) --optimize speed src/sort.pegjs lib/sort.js
+
 
 build-dev:
 	@echo ---------------------------------------------------------
 	@echo - BUILDING PARSERS AUTOMATICALLY RERUNS ON FILE CHANGES -
 	@echo ---------------------------------------------------------
-	$(NODE) $(NODEMON) --ext pegjs --watch src --exec node ./build.js
+	$(NODE) $(NODEMON) --ext pegjs --watch src --exec "make build"
 
 test:
 	@echo -----------------
@@ -61,6 +65,9 @@ lint:
 	@echo -----------------
 	$(NODE) $(JSHINT) $(TESTS)
 
-release: lint build test
+release: lint build test integration-test
+	@echo ------------------------------------------
+	@echo - ready to bump versions and npm release -
+	@echo ------------------------------------------
 
 .PHONY: dev lint test test-dev integration-test build build-dev

@@ -28,8 +28,7 @@
   "author": "Sean Garner <seanlgarner@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "is": "^3.0.1",
-    "jsonapi-mongo-parsers": "^0.2.0"
+    "is": "^3.0.1"
   },
   "devDependencies": {
     "chai": "^2.2.0",
