@@ -127,6 +127,28 @@ describe('mongo-url integration test:', function() {
     });
   });
 
+  describe('findIn', function(done) {
+    it('should return a mongo cursor', function (done) {
+      parse.findIn(docs, 'q=lt(id,3)').toArray(function (err, res) {
+        if (err) return done(err);
+        expect(res).to.be.an('array').and.have.length(2);
+        expect(res[0]).to.have.property('id', 1);
+        expect(res[1]).to.have.property('id', 2);
+        done();
+      });
+    });
+  });
+
+  describe('findOneIn', function(done) {
+    it('should return a single document', function (done) {
+      parse.findOneIn(docs, 'q=eq(id,3)', function (err, res) {
+        if (err) return done(err);
+        expect(res).to.have.property('id', 3);
+        done();
+      });
+    });
+  });
+
 });
 
 
