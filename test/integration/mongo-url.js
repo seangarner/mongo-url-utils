@@ -81,11 +81,9 @@ describe('mongo-url integration test:', function() {
     var q = test[0];
     var name = typeof q === 'string' ? q : JSON.stringify(q);
     it(name, function (done) {
-      var opts = parse(q);
-      if (DEBUG) console.dir(opts);
-      var query = opts.query;
-      delete opts.query;
-      docs.find(query, opts).toArray(function (err, docs) {
+      var parsed = parse(q);
+      if (DEBUG) console.dir(parsed);
+      docs.find(parsed.query, parsed.options).toArray(function (err, docs) {
         if (err) return done(err);
         var expected = test[1];
         expect(pluck(docs, 'id')).to.eql(expected);
@@ -95,8 +93,8 @@ describe('mongo-url integration test:', function() {
   });
 
   it('{fields:"+_id,+name"}', function (done) {
-    var opts = parse({fields:'+name'});
-    docs.find({}, opts).toArray(function (err, docs) {
+    var parsed = parse({fields:'+name'});
+    docs.find({}, parsed.options).toArray(function (err, docs) {
       if (err) return done(err);
       docs.forEach(function (doc) {
         expect(doc).to.have.all.keys('_id', 'name');
@@ -106,8 +104,8 @@ describe('mongo-url integration test:', function() {
   });
 
   it('{fields:"-_id,+name"}', function (done) {
-    var opts = parse({fields:'-_id,+name'});
-    docs.find({}, opts).toArray(function (err, docs) {
+    var parsed = parse({fields:'-_id,+name'});
+    docs.find({}, parsed.options).toArray(function (err, docs) {
       if (err) return done(err);
       docs.forEach(function (doc) {
         expect(doc).to.have.all.keys('name');
@@ -117,8 +115,8 @@ describe('mongo-url integration test:', function() {
   });
 
   it('{fields:"-name,-address,-borough,-closed"}', function (done) {
-    var opts = parse({fields:'-name,-address,-borough,-closed'});
-    docs.find({}, opts).toArray(function (err, docs) {
+    var parsed = parse({fields:'-name,-address,-borough,-closed'});
+    docs.find({}, parsed.options).toArray(function (err, docs) {
       if (err) return done(err);
       docs.forEach(function (doc) {
         expect(doc).to.have.all.keys('_id','cuisine','grades','id','restaurant_id');

@@ -30,22 +30,24 @@ collection.find(opts.query, opts, function (err, docs) {
 The above would yield this `opts` object:
 ```js
 {
-  sort: {
-    age: -1.
-    firstName: 1
-  },
-  fields: {
-    _id: 0,
-    email: 1,
-    firstName: 1
-  },
-  limit: 10,
-  offset: 0,
   query: {
     $or: [
       { age: { '$gt': 18 } },
       { married: { '$eq': false } },
     ]
+  },
+  options: {
+    sort: {
+      age: -1.
+      firstName: 1
+    },
+    fields: {
+      _id: 0,
+      email: 1,
+      firstName: 1
+    },
+    limit: 10,
+    offset: 0
   }
 }
 ```
@@ -56,7 +58,9 @@ mongoUrlUtils('q=gt(age,21)&sort=-age');
 
 // {
 //   query: { age: { '$gt': 21 } },
-//   sort: { age: -1 }
+//   options: {
+//     sort: { age: -1 }
+//   }
 // }
 ```
 
@@ -180,5 +184,4 @@ var options = {
 mongoUrlUtils({q: 'regex(email,".*\\\\.gmail\\\\.com")'}, options);
 
 // Error: regex operator is disabled
-//     at assertCan (/home/sgarner/Code/mongo-url-utils/lib/query.js:2641:59)
 ```
