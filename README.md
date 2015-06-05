@@ -119,6 +119,15 @@ Example; only return people who are widowed or age is greater than 50 and less t
 GET /people?q=or(eq(widowed,true),and(gt(age,50),lt(age,70)))
 ```
 
+There are also extra operators that wrap `$regex` providing a more predictable query without the
+full power or danger associated with PCREs.
+
+operator    | example
+----------- | ----------------------------------
+startsWith  | `startsWith(name, "We")`
+endsWith    | `endsWith(address.street, "Road")`
+contains    | `contains(borough, "shire")`
+
 #### todo
   - $not
   - $nor

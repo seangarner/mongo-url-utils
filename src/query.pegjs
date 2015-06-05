@@ -16,6 +16,10 @@
     return o;
   }
 
+  function escapeRegex(value) {
+    return value.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+  }
+
   function assertCan(keyword) {
     if (options.disabled.indexOf(keyword) > -1) throw new Error(keyword + ' operator is disabled');
   }
@@ -31,6 +35,9 @@ Query
   / Exists
   / ElemMatch
   / Regex
+  / StartsWith
+  / EndsWith
+  / Contains
   / Mod
   / Text
   / Where
@@ -83,6 +90,24 @@ Regex
     assertCan('regex');
     if (opts) return set({}, prop, {$regex: pattern, $options: opts[2].join('')});
     return set({}, prop, {$regex: pattern});
+  }
+
+StartsWith
+  = "startsWith(" __ prop:Property __ "," __ value:Scalar __ ")" {
+    assertCan('StartsWith');
+    return set({}, prop, {$regex: '^' + escapeRegex(value)});
+  }
+
+EndsWith
+  = "endsWith(" __ prop:Property __ "," __ value:Scalar __ ")" {
+    assertCan('EndsWith');
+    return set({}, prop, {$regex: escapeRegex(value) + '$'});
+  }
+
+Contains
+  = "contains(" __ prop:Property __ "," __ value:Scalar __ ")" {
+    assertCan('Contains');
+    return set({}, prop, {$regex: escapeRegex(value)});
   }
 
 Where

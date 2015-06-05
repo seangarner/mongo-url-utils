@@ -324,5 +324,76 @@ describe('query', function() {
     });
   });
 
+  describe('startsWith operator', function() {
+    it('should use a $regex with prefixed ^', function () {
+      expect(query('startsWith(name,"W")')).to.deep.eql({
+        name: { $regex: '^W' }
+      });
+    });
+    it('should ignore whitespace around the arguments', function () {
+      expect(query('startsWith( name , "W" )')).to.deep.eql({
+        name: { $regex: '^W' }
+      });
+    });
+    it('should escape reserved regex chars', function () {
+      expect(query('startsWith(name, "^W.*$")')).to.deep.eql({
+        name: { $regex: '^\\^W\\.\\*\\$' }
+      });
+    });
+    it('should throw if the argument is not an array', function () {
+      expect(query.bind(null, 'startsWith(tags,[willthrow])')).to.throw('Expected');
+    });
+    it('should throw if too many arguments are supplied', function () {
+      expect(query.bind(null, 'startsWith(name,"W","will_throw")')).to.throw('Expected');
+    });
+  });
+
+  describe('endsWith operator', function() {
+    it('should use a $regex with a $ suffix', function () {
+      expect(query('endsWith(name,"W")')).to.deep.eql({
+        name: { $regex: 'W$' }
+      });
+    });
+    it('should ignore whitespace around the arguments', function () {
+      expect(query('endsWith( name , "W" )')).to.deep.eql({
+        name: { $regex: 'W$' }
+      });
+    });
+    it('should escape reserved regex chars', function () {
+      expect(query('endsWith(name, "^W.*$")')).to.deep.eql({
+        name: { $regex: '\\^W\\.\\*\\$$' }
+      });
+    });
+    it('should throw if the argument is not an array', function () {
+      expect(query.bind(null, 'endsWith(tags,[willthrow])')).to.throw('Expected');
+    });
+    it('should throw if too many arguments are supplied', function () {
+      expect(query.bind(null, 'endsWith(name,"W","will_throw")')).to.throw('Expected');
+    });
+  });
+
+  describe('contains operator', function() {
+    it('should use a $regex', function () {
+      expect(query('contains(name,"W")')).to.deep.eql({
+        name: { $regex: 'W' }
+      });
+    });
+    it('should ignore whitespace around the arguments', function () {
+      expect(query('contains( name , "W" )')).to.deep.eql({
+        name: { $regex: 'W' }
+      });
+    });
+    it('should escape reserved regex chars', function () {
+      expect(query('contains(name, "^W.*$")')).to.deep.eql({
+        name: { $regex: '\\^W\\.\\*\\$' }
+      });
+    });
+    it('should throw if the argument is not an array', function () {
+      expect(query.bind(null, 'contains(tags,[willthrow])')).to.throw('Expected');
+    });
+    it('should throw if too many arguments are supplied', function () {
+      expect(query.bind(null, 'contains(name,"W","will_throw")')).to.throw('Expected');
+    });
+  });
 
 });

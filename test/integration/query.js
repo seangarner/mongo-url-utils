@@ -28,7 +28,12 @@ var tests = [
   ['exists(closed,false)',                                   [1,2,4,5,7,8,9,10]],
   ['all(address.coord,["-47.9327","-82.6261"])',             [10]],
   ['text("& son")',                                          [1]],
-  ['text("& son", "es")',                                    []]
+  ['text("& son", "es")',                                    []],
+  ['endsWith(borough,"shire")',                              [3,4,5,6,7,8,10]],
+  ['endsWith(borough,"s.*e")',                               []],
+  ['startsWith(name,"W")',                                   [1,7]],
+  ['contains(name,"and")',                                   [1,3,5,6,8,10]],
+  ['contains(name,".*and.*")',                               []]
 ];
 
 var expect = require('chai').expect;
