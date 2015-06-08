@@ -1,6 +1,8 @@
 # mongo-url-parser changelog
 
- - added `startsWith`, `endsWith` and `contains` support
+## 0.5.0
+
+  - added `startsWith`, `endsWith` and `contains` support
 
 ## 0.4.0
 
