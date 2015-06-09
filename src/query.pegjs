@@ -41,10 +41,10 @@ Query
   / Mod
   / Text
   / Where
+  / Type
 
   //TODO: $not
   //TODO: $nor
-  //TODO: $type
   //TODO: /regex/ (can't use $regex with $in/$nin)
 
 ScalarComparisonOperator
@@ -141,6 +141,53 @@ Exists "exists"
     return set({}, prop, {$exists: value});
   }
 
+Type
+  = "type(" __ prop:Property __ "," __ id:MongoType __ ")" {
+    var typeMap = {
+      Double: 1,
+      String: 2,
+      Object: 3,
+      Array: 4,
+      Binary:	5,
+      Undefined: 6,
+      ObjectId: 7,
+      Boolean:	8,
+      Date: 9,
+      Null: 10,
+      RegExp: 11,
+      Javascript:	13,
+      Symbol:	14,
+      ScopedJavascript:	15,
+      Int32: 16,
+      Timestamp: 17,
+      Int64: 18
+    };
+    assertCan('type');
+    if (typeof id === 'string') id = typeMap[id];
+    if (id < -1 || id > 254) throw new Error('Expected number between -1 and 254');
+    return set({}, prop, {$type: id});
+  }
+
+MongoType
+  = ParsedInt
+  / "Double"
+  / "String"
+  / "ObjectId"
+  / "Object"
+  / "Array"
+  / "Binary"
+  / "Undefined"	// Deprecated
+  / "Boolean"
+  / "Date"
+  / "Null"
+  / "RegExp"
+  / "Javascript"
+  / "Symbol"
+  / "ScopedJavascript"
+  / "Int32"
+  / "Timestamp"
+  / "Int64"
+
 //TODO: make this completely mongo compatible
 Property "document property"
   = property:$([^\.$,\0\ ][^,\0\ ]*) { return property; }
@@ -196,6 +243,11 @@ Int "integer"
   / Digit
   / "-" Digit19 Digits
   / "-" Digit
+
+ParsedInt "integer"
+  = n:$(Int) {
+    return parseInt(n, 10);
+  }
 
 Frac "fraction"
   = "." Digits

@@ -33,7 +33,11 @@ var tests = [
   ['endsWith(borough,"s.*e")',                               []],
   ['startsWith(name,"W")',                                   [1,7]],
   ['contains(name,"and")',                                   [1,3,5,6,8,10]],
-  ['contains(name,".*and.*")',                               []]
+  ['contains(name,".*and.*")',                               []],
+  ['type(name,String)',                                      [1,2,3,4,5,6,7,8,9,10]],
+  ['type(name,Object)',                                      []],
+  ['type(closed,Boolean)',                                   [3,6]],
+  ['type(closed,8)',                                         [3,6]]
 ];
 
 var expect = require('chai').expect;

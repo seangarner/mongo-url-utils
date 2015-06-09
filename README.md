@@ -113,6 +113,7 @@ $text       | `text("y hijos", "es")`
 $mod        | `mod(id,5,1)`
 $elemMatch  | `elemMatch(grades,eq(score,2))`
 $exists     | `exists(closed,false)`
+$type       | `type(name,2)` or `type(name,String)` (see Mongo Types)
 
 Example; only return people who are widowed or age is greater than 50 and less than 70.
 ```
@@ -128,10 +129,15 @@ startsWith  | `startsWith(name, "We")`
 endsWith    | `endsWith(address.street, "Road")`
 contains    | `contains(borough, "shire")`
 
+#### mongo types
+The `type()` query operator allows either integer identifiers as per the mongodb documentation.  For
+convinience it also maps the following types to their ids: `Double`, `String`, `Object`, `Array`,
+`Binary`, `Undefined`, `ObjectId`, `Boolean`, `Date`, `Null`, `RegExp`, `Javascript`, `Symbol`,
+`ScopedJavascript`, `Int32`, `Timestamp` and `Int64`.
+
 #### todo
   - $not
   - $nor
-  - $type
   - /regex/ (can't use $regex with $in/$nin)
 
 

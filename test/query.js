@@ -396,4 +396,73 @@ describe('query', function() {
     });
   });
 
+  describe('type operator', function() {
+    it('should accept integers as identifiers', function () {
+      expect(query('type(name,-1)')).to.deep.eql({name: { $type: -1 }});
+      expect(query('type(name,2)')).to.deep.eql({name: { $type: 2 }});
+      expect(query('type(name,30)')).to.deep.eql({name: { $type: 30 }});
+      expect(query('type(name,254)')).to.deep.eql({name: { $type: 254 }});
+    });
+    it('should throw if the number is not an integer between -1 and 254', function () {
+      expect(query.bind(null, 'type(name,1.1)')).to.throw('Expected');
+      expect(query.bind(null, 'type(name,-2)')).to.throw('Expected');
+      expect(query.bind(null, 'type(name,255)')).to.throw('Expected');
+    });
+    it('should throw if the type is unrecognised', function () {
+      expect(query.bind(null, 'type(name,Foobar)')).to.throw('Expected');
+    });
+    it('should map Double to 1', function () {
+      expect(query('type(name,Double)')).to.deep.eql({ name: { $type: 1 } });
+    });
+    it('should map String to 2', function () {
+      expect(query('type(name,String)')).to.deep.eql({ name: { $type: 2 } });
+    });
+    it('should map Object to 3', function () {
+      expect(query('type(name,Object)')).to.deep.eql({ name: { $type: 3 } });
+    });
+    it('should map Array to 4', function () {
+      expect(query('type(name,Array)')).to.deep.eql({ name: { $type: 4 } });
+    });
+    it('should map Binary to 5', function () {
+      expect(query('type(name,Binary)')).to.deep.eql({ name: { $type: 5 } });
+    });
+    it('should map Undefined to 6', function () {
+      expect(query('type(name,Undefined)')).to.deep.eql({ name: { $type: 6 } });
+    });
+    it('should map ObjectId to 7', function () {
+      expect(query('type(name,ObjectId)')).to.deep.eql({ name: { $type: 7 } });
+    });
+    it('should map Boolean to 8', function () {
+      expect(query('type(name,Boolean)')).to.deep.eql({ name: { $type: 8 } });
+    });
+    it('should map Date to 9', function () {
+      expect(query('type(name,Date)')).to.deep.eql({ name: { $type: 9 } });
+    });
+    it('should map Null to 10', function () {
+      expect(query('type(name,Null)')).to.deep.eql({ name: { $type: 10 } });
+    });
+    it('should map RegExp to 11', function () {
+      expect(query('type(name,RegExp)')).to.deep.eql({ name: { $type: 11 } });
+    });
+    it('should map Javascript to 13', function () {
+      expect(query('type(name,Javascript)')).to.deep.eql({ name: { $type: 13 } });
+    });
+    it('should map Symbol to 14', function () {
+      expect(query('type(name,Symbol)')).to.deep.eql({ name: { $type: 14 } });
+    });
+    it('should map ScopedJavascript to 15', function () {
+      expect(query('type(name,ScopedJavascript)')).to.deep.eql({ name: { $type: 15 } });
+    });
+    it('should map Int32 to 16', function () {
+      expect(query('type(name,Int32)')).to.deep.eql({ name: { $type: 16 } });
+    });
+    it('should map Timestamp to 17', function () {
+      expect(query('type(name,Timestamp)')).to.deep.eql({ name: { $type: 17 } });
+    });
+    it('should map Int64 to 18', function () {
+      expect(query('type(name,Int64)')).to.deep.eql({ name: { $type: 18 } });
+    });
+
+  });
+
 });
