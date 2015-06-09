@@ -1,5 +1,9 @@
 # mongo-url-parser changelog
 
+## 0.6.0
+
+  - added `type` query operator
+
 ## 0.5.0
 
   - added `startsWith`, `endsWith` and `contains` support
