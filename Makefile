@@ -70,4 +70,8 @@ release: lint build test integration-test
 	@echo - ready to bump versions and npm release -
 	@echo ------------------------------------------
 
+coverage:
+	$(NPM) install istanbul
+	node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- test/*.js test/integration/*.js --reporter spec
+
 .PHONY: dev lint test test-dev integration-test build build-dev
