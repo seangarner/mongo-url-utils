@@ -14,4 +14,8 @@ describe('offset', function() {
   it('should throw when the input number is not whole', function () {
     expect(offset.bind(null, '1.1')).to.throw();
   });
+
+  it('should throw when the input is negative', function () {
+    expect(offset.bind(null, '-1')).to.throw();
+  });
 });

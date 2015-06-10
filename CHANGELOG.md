@@ -1,5 +1,7 @@
 # mongo-url-parser changelog
 
+  - don't allow negative offset or limit fixes #1
+
 ## 0.6.0
 
   - added `type` query operator

@@ -14,4 +14,8 @@ describe('limit', function() {
   it('should throw when the input number is not whole', function () {
     expect(limit.bind(null, '1.1')).to.throw();
   });
+
+  it('should throw when the input number is negative', function () {
+    expect(limit.bind(null, '-1')).to.throw();
+  });
 });
