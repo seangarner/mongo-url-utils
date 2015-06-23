@@ -1,6 +1,9 @@
 # mongo-url-parser changelog
 
-  - don't allow negative offset or limit fixes #1
+## NEXT_MINOR
+
+  - **breaking change** renamed `offset` to `skip` to match mongo syntax
+  - don't allow negative `skip` or `limit` fixes #1
 
 ## 0.6.0
 
