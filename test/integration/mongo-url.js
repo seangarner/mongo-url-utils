@@ -34,7 +34,7 @@ var tests = [
   [
     {
       limit: '2',
-      offset: '2'
+      skip: '2'
     },
     [3,4]
   ],

@@ -16,7 +16,7 @@ var params = {
   sort: '-age,+firstName',
   fields: '-_id,+email,+firstName',
   limit: '10',
-  offset: '0',
+  skip: '0',
   q: 'or(gt(age,18),eq(married,false))'
 };
 
@@ -47,7 +47,7 @@ The above would yield this `opts` object:
       firstName: 1
     },
     limit: 10,
-    offset: 0
+    skip: 0
   }
 }
 ```
@@ -86,7 +86,7 @@ mongoUrlUtils.findOneIn(people, 'q=eq(id,3)', function (err, person) {
 
 
 ## find operators
-A find string is made up of any of the `query`, `sort`, `fields`, `limit` and `offset` operators.
+A find string is made up of any of the `query`, `sort`, `fields`, `limit` and `skip` operators.
 
 
 ### `q`
@@ -175,13 +175,13 @@ Example; return at most the first 10 documents.
 GET /people?limit=10
 ```
 
-### `offset`
+### `skip`
 How many documents to skip before returning the set.  When combined with `limit` it can be used to
 page results.
 
 Example; return all except the first 10 documents.
 ```
-GET /people?offset=10
+GET /people?skip=10
 ```
 
 ## disabling query operators
