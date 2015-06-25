@@ -200,3 +200,20 @@ mongoUrlUtils({q: 'regex(email,".*\\\\.gmail\\\\.com")'}, options);
 
 // Error: regex operator is disabled
 ```
+
+### a note on URL encoding
+Browsers don't encode a literal `+` in the query string of a url but node will convert them into
+literal spaces when parsing the querystring.  This is a little inconvenient for `sort` and `fields`
+which both prefix fields with `+`.  Both parsers works around this by treating a literal space as it
+would a `+` at the beginning of the query value.
+
+If this magic behavior concerns you it can be disabled by setting the `{strictEncoding: true}`
+option - but remember clients are now responsible for encoding `+` before making the request.
+
+```js
+var options = {
+  strictEncoding: true
+};
+mongoUrlUtils('fields=+id,-_id', options); // throws an Error
+mongoUrlUtils('fields=%2Bid,-_id', options); // works as expected
+```

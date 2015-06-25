@@ -15,6 +15,10 @@ list
 sort
   = "+" right:property { return [right, 1]; }
   / "-" right:property { return [right, -1]; }
+  / " " right:property {
+    if (options.strictEncoding === true) throw new Error('Expected "+" or "-"; disable strictEncoding to allow space in place of +');
+    return [right, 1];
+  }
 
 property
   = property:$([^\.$,\0][^,\0]*) { return property; }

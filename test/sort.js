@@ -66,4 +66,12 @@ describe('sort', function() {
     expect(mongoUrl.sort('+deep.property')).to.eql({'deep.property': 1});
   });
 
+  it('should treat space like literal `+` in querystring by default', function () {
+    expect(mongoUrl.sort('+ascending')).to.eql({ascending: 1});
+  });
+
+  it('should not treat space like literal `+` if strictEncoding option is true', function () {
+    expect(mongoUrl.sort.bind(null, ' name', {strictEncoding: true})).to.throw('Expected "+" or "-"; disable strictEncoding to allow space in place of +');
+  });
+
 });
