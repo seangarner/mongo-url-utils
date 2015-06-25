@@ -65,4 +65,12 @@ describe('fields', function() {
     expect(mongoUrl.fields('+deep.property')).to.eql({'deep.property': 1});
   });
 
+  it('should treat space like literal `+` in querystring by default', function () {
+    expect(mongoUrl.fields('+include')).to.eql({include: 1});
+  });
+
+  it('should not treat space like literal `+` if strictEncoding option is true', function () {
+    expect(mongoUrl.fields.bind(null, ' include', {strictEncoding: true})).to.throw('Expected "+" or "-"; disable strictEncoding to allow space in place of +');
+  });
+
 });

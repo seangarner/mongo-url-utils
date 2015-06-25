@@ -24,6 +24,10 @@ fields
 including
   = "+" right:field { return [right, 1]; }
   / "-_id" { return ['_id', 0]; }
+  / " " right:field {
+    if (options.strictEncoding === true) throw new Error('Expected "+" or "-"; disable strictEncoding to allow space in place of +');
+    return [right, 1];
+  }
 
 excluding
   = "-" right:field { return [right, 0]; }
