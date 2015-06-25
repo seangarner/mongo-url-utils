@@ -4,6 +4,7 @@
 
   - **breaking change** renamed `offset` to `skip` to match mongo syntax
   - don't allow negative `skip` or `limit` fixes #1
+  - added `strictEncoding` option
 
 ## 0.6.0
 
