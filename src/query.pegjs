@@ -85,45 +85,45 @@ ArrayComparison
     return set({}, prop, child);
   }
 
-Regex
+Regex "regex"
   = "regex(" __ prop:Property __ "," __ pattern:String __ opts:("," __ [imxs]+ __)? ")" {
     assertCan('regex');
     if (opts) return set({}, prop, {$regex: pattern, $options: opts[2].join('')});
     return set({}, prop, {$regex: pattern});
   }
 
-StartsWith
+StartsWith "startsWith"
   = "startsWith(" __ prop:Property __ "," __ value:Scalar __ ")" {
     assertCan('StartsWith');
     return set({}, prop, {$regex: '^' + escapeRegex(value)});
   }
 
-EndsWith
+EndsWith "endsWith"
   = "endsWith(" __ prop:Property __ "," __ value:Scalar __ ")" {
     assertCan('EndsWith');
     return set({}, prop, {$regex: escapeRegex(value) + '$'});
   }
 
-Contains
+Contains "contains"
   = "contains(" __ prop:Property __ "," __ value:Scalar __ ")" {
     assertCan('Contains');
     return set({}, prop, {$regex: escapeRegex(value)});
   }
 
-Where
+Where "where"
   = "where(" __ expression:String __ ")" {
     assertCan('where');
     return {$where: expression};
   }
 
-Text
+Text "text"
   = "text(" __ search:String __ lang:("," __ String __ )? ")" {
     assertCan('text');
     if (lang) return {$text: {$search: search, $language: lang[2]}};
     return {$text: {$search: search}};
   }
 
-Mod
+Mod "mod"
   = "mod(" __ prop:Property __ "," __ divisor:Number __ "," __ remainder:Number __ ")" {
     assertCan('mod');
     return set({}, prop, { $mod: [divisor, remainder] });
@@ -141,7 +141,7 @@ Exists "exists"
     return set({}, prop, {$exists: value});
   }
 
-Type
+Type "type"
   = "type(" __ prop:Property __ "," __ id:MongoType __ ")" {
     var typeMap = {
       Double: 1,

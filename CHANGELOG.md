@@ -2,6 +2,7 @@
 
 ## NEXT_MINOR
 
+  - improved query parser commenting so exceptions are clearer
   - **breaking change** renamed `offset` to `skip` to match mongo syntax
   - **breaking change** renamed `q` to `query` to match mongo syntax
   - don't allow negative `skip` or `limit` fixes #1
