@@ -1,6 +1,6 @@
 # mongo-url-parser changelog
 
-## NEXT_MINOR
+## 0.7.0
 
   - **breaking change** renamed `offset` to `skip` to match mongo syntax
   - **breaking change** renamed `q` to `query` to match mongo syntax
