@@ -6,6 +6,7 @@
   - **breaking change** renamed `q` to `query` to match mongo syntax
   - don't allow negative `skip` or `limit` fixes #1
   - added `strictEncoding` option
+  - main function now prefixes exceptions with the parser that threw the exception in the message
 
 ## 0.6.0
 
