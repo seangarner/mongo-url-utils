@@ -1,32 +1,32 @@
 var tests = [
   [
     {
-      q: 'eq(id,1)'
+      query: 'eq(id,1)'
     },
     [1]
   ],
   [
     {
-      q: 'lt(id,5)'
+      query: 'lt(id,5)'
     },
     [1,2,3,4]
   ],
   [
     {
-      q: 'lt(id,5)',
+      query: 'lt(id,5)',
       sort: '-id'
     },
     [4,3,2,1]
   ],
   [
     {
-      q: 'lt(id,5)',
+      query: 'lt(id,5)',
       sort: '+id'
     },
     [1,2,3,4]
   ],
   [
-    'q=lt(id,5)&sort=+id',
+    'query=lt(id,5)&sort=+id',
     [1,2,3,4]
   ],
   [
@@ -43,7 +43,7 @@ var tests = [
     [3,4]
   ],
   [
-    'q=gt(id,1)&limit=2',
+    'query=gt(id,1)&limit=2',
     [2,3]
   ]
 ];
@@ -82,10 +82,10 @@ describe('mongo-url integration test:', function() {
   });
 
   tests.forEach(function (test) {
-    var q = test[0];
-    var name = typeof q === 'string' ? q : JSON.stringify(q);
+    var query = test[0];
+    var name = typeof query === 'string' ? query : JSON.stringify(query);
     it(name, function (done) {
-      var parsed = parse(q);
+      var parsed = parse(query);
       if (DEBUG) console.dir(parsed);
       docs.find(parsed.query, parsed.options).toArray(function (err, docs) {
         if (err) return done(err);
@@ -131,7 +131,7 @@ describe('mongo-url integration test:', function() {
 
   describe('findIn', function(done) {
     it('should return a mongo cursor', function (done) {
-      parse.findIn(docs, 'q=lt(id,3)').toArray(function (err, res) {
+      parse.findIn(docs, 'query=lt(id,3)').toArray(function (err, res) {
         if (err) return done(err);
         expect(res).to.be.an('array').and.have.length(2);
         expect(res[0]).to.have.property('id', 1);
@@ -143,7 +143,7 @@ describe('mongo-url integration test:', function() {
 
   describe('findOneIn', function(done) {
     it('should return a single document', function (done) {
-      parse.findOneIn(docs, 'q=eq(id,3)', function (err, res) {
+      parse.findOneIn(docs, 'query=eq(id,3)', function (err, res) {
         if (err) return done(err);
         expect(res).to.have.property('id', 3);
         done();

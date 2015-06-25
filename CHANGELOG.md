@@ -3,6 +3,7 @@
 ## NEXT_MINOR
 
   - **breaking change** renamed `offset` to `skip` to match mongo syntax
+  - **breaking change** renamed `q` to `query` to match mongo syntax
   - don't allow negative `skip` or `limit` fixes #1
   - added `strictEncoding` option
 
