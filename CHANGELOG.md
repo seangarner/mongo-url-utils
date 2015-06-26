@@ -1,5 +1,12 @@
 # mongo-url-parser changelog
 
+## 1.0.0 (2015/06/26)
+
+  - First stable release.
+  - No code changes from 0.8.0.
+
+---
+
 ## 0.8.0
 
   - **breaking change** renamed `options.query.disabled` to `options.query.disabledOperators`

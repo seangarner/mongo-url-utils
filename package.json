@@ -1,6 +1,6 @@
 {
   "name": "mongo-url-utils",
-  "version": "0.8.0",
+  "version": "1.0.0",
   "description": "url parser utilities for connecting with mongodb",
   "main": "lib/mongo-url.js",
   "scripts": {
@@ -31,7 +31,7 @@
     "is": "^3.0.1"
   },
   "devDependencies": {
-    "chai": "^2.2.0",
+    "chai": "^3.0.0",
     "jshint": "^2.7.0",
     "mocha": "^2.2.1",
     "mongodb": "^2.0.28",
