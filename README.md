@@ -7,6 +7,8 @@ Utilities to parse url parameters into objects that can be passed to mongo funct
 ## compatibility
 Currently depends on mongo 2.6 for the eq support.  PR welcome for <2.6 support.
 
+Tested against node 0.10, 0.12 and latest iojs.
+
 
 ## example
 ```js
