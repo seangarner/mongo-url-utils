@@ -17,7 +17,7 @@ var params = {
   fields: '-_id,+email,+firstName',
   limit: '10',
   skip: '0',
-  q: 'or(gt(age,18),eq(married,false))'
+  query: 'or(gt(age,18),eq(married,false))'
 };
 
 var opts = mongoUrlUtils(params);
@@ -54,7 +54,7 @@ The above would yield this `opts` object:
 
 Or you can parse the query string directly:
 ```js
-mongoUrlUtils('q=gt(age,21)&sort=-age');
+mongoUrlUtils('query=gt(age,21)&sort=-age');
 
 // {
 //   query: { age: { '$gt': 21 } },
@@ -69,7 +69,7 @@ mongoUrlUtils('q=gt(age,21)&sort=-age');
 Sugar to parse a url or params and pass to mongo `find` method of a collection.  Returns a cursor.
 ```js
 var people = db.collection('people');
-mongoUrlUtils.findIn(people, 'q=eq(id,3)').toArray(function (err, docs) {
+mongoUrlUtils.findIn(people, 'query=eq(id,3)').toArray(function (err, docs) {
   // ...
 });
 ```
@@ -79,7 +79,7 @@ mongoUrlUtils.findIn(people, 'q=eq(id,3)').toArray(function (err, docs) {
 Sugar to parse a url or params and pass to mongo `findOne` method of a collection.
 ```js
 var people = db.collection('people');
-mongoUrlUtils.findOneIn(people, 'q=eq(id,3)', function (err, person) {
+mongoUrlUtils.findOneIn(people, 'query=eq(id,3)', function (err, person) {
   // ...
 });
 ```
@@ -89,7 +89,7 @@ mongoUrlUtils.findOneIn(people, 'q=eq(id,3)', function (err, person) {
 A find string is made up of any of the `query`, `sort`, `fields`, `limit` and `skip` operators.
 
 
-### `q`
+### `query`
 A query string which when parsed builds a query object for find.  Coverage of the mongo query
 interface isn't 100% implemented yet.  Here's what's available:
 
@@ -117,7 +117,7 @@ $type       | `type(name,2)` or `type(name,String)` (see Mongo Types)
 
 Example; only return people who are widowed or age is greater than 50 and less than 70.
 ```
-GET /people?q=or(eq(widowed,true),and(gt(age,50),lt(age,70)))
+GET /people?query=or(eq(widowed,true),and(gt(age,50),lt(age,70)))
 ```
 
 There are also extra operators that wrap `$regex` providing a more predictable query without the
@@ -196,7 +196,7 @@ var options = {
     disabledOperators: ['regex', 'text']
   }
 };
-mongoUrlUtils({q: 'regex(email,".*\\\\.gmail\\\\.com")'}, options);
+mongoUrlUtils({query: 'regex(email,".*\\\\.gmail\\\\.com")'}, options);
 
 // Error: regex operator is disabled
 ```
