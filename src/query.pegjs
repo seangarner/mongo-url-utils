@@ -1,7 +1,7 @@
 {
   //TODO: disabled presets (e.g. mongo 2.2/2.6/3.0)
   //TODO: determine dependencies automatically
-  if (!Array.isArray(options.disabled)) options.disabled = [];
+  if (!Array.isArray(options.disabledOperators)) options.disabledOperators = [];
 
   function collect(head, tail) {
     var res = [head];
@@ -21,7 +21,9 @@
   }
 
   function assertCan(keyword) {
-    if (options.disabled.indexOf(keyword) > -1) throw new Error(keyword + ' operator is disabled');
+    if (options.disabledOperators.indexOf(keyword) > -1) {
+      throw new Error(keyword + ' operator is disabled');
+    }
   }
 }
 

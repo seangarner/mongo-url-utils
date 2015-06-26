@@ -1,5 +1,9 @@
 # mongo-url-parser changelog
 
+## 0.8.0
+
+  - **breaking change** renamed `options.query.disabled` to `options.query.disabledOperators`
+
 ## 0.7.0
 
   - **breaking change** renamed `offset` to `skip` to match mongo syntax

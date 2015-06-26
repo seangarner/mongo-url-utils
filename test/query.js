@@ -91,11 +91,11 @@ describe('query', function() {
   });
 
   describe('options', function() {
-    describe('disabled', function() {
+    describe('disabledOperators', function() {
       it('take an array of keywords to disable', function () {
-        expect(query.bind(null, 'regex(email,".*\\\\.gmail\\\\.com")', {disabled:['regex']}))
+        expect(query.bind(null, 'regex(email,".*\\\\.gmail\\\\.com")', {disabledOperators:['regex']}))
           .to.throw('regex operator is disabled');
-        expect(query.bind(null, 'eq(tags,"nodejs")', {disabled:['eq']}))
+        expect(query.bind(null, 'eq(tags,"nodejs")', {disabledOperators:['eq']}))
           .to.throw('eq operator is disabled');
       });
     });

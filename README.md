@@ -193,7 +193,7 @@ Example; disable the regex operator.
 ```js
 var options = {
   query: {
-    disabled: ['regex', 'text']
+    disabledOperators: ['regex', 'text']
   }
 };
 mongoUrlUtils({q: 'regex(email,".*\\\\.gmail\\\\.com")'}, options);
