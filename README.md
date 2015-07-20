@@ -131,6 +131,9 @@ startsWith  | `startsWith(name, "We")`
 endsWith    | `endsWith(address.street, "Road")`
 contains    | `contains(borough, "shire")`
 
+The extra operators also support `$not`.  For example `not(contains(borough, "shire"))` would
+find the docs in which `borough` does not contain `shire`.  
+
 #### mongo types
 The `type()` query operator allows either integer identifiers as per the mongodb documentation.  For
 convinience it also maps the following types to their ids: `Double`, `String`, `Object`, `Array`,
@@ -138,7 +141,7 @@ convinience it also maps the following types to their ids: `Double`, `String`, `
 `ScopedJavascript`, `Int32`, `Timestamp` and `Int64`.
 
 #### todo
-  - $not
+  - $not (is supported with `startsWith`, `endsWith` and `contains`)
   - $nor
   - /regex/ (can't use $regex with $in/$nin)
 

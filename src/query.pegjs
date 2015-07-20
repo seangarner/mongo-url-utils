@@ -99,17 +99,32 @@ StartsWith
     assertCan('StartsWith');
     return set({}, prop, {$regex: '^' + escapeRegex(value)});
   }
+  / "not(startsWith(" __ prop:Property __ "," __ value:Scalar __ "))" {
+    assertCan('StartsWith');
+    assertCan('not');
+    return set({}, prop, {$not: new RegExp('^' + escapeRegex(value))});
+  }
 
 EndsWith
   = "endsWith(" __ prop:Property __ "," __ value:Scalar __ ")" {
     assertCan('EndsWith');
     return set({}, prop, {$regex: escapeRegex(value) + '$'});
   }
+  / "not(endsWith(" __ prop:Property __ "," __ value:Scalar __ "))" {
+    assertCan('EndsWith');
+    assertCan('not');
+    return set({}, prop, {$not: new RegExp(escapeRegex(value) + '$')});
+  }
 
 Contains
   = "contains(" __ prop:Property __ "," __ value:Scalar __ ")" {
     assertCan('Contains');
     return set({}, prop, {$regex: escapeRegex(value)});
+  }
+  / "not(contains(" __ prop:Property __ "," __ value:Scalar __ "))" {
+    assertCan('Contains');
+    assertCan('not');
+    return set({}, prop, {$not: new RegExp(escapeRegex(value))});
   }
 
 Where

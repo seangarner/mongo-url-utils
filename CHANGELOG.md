@@ -1,5 +1,10 @@
 # mongo-url-parser changelog
 
+## UNRELEASED
+
+  - add `not` support to `contains`, `startsWith` and `endsWith`
+    + full `not` support still outstanding
+
 ## 1.0.0 (2015/06/26)
 
   - First stable release.

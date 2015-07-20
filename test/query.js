@@ -396,6 +396,53 @@ describe('query', function() {
     });
   });
 
+  describe('not operator', function() {
+    it('should only support contains, startsWith & endsWith', function () {
+      expect(query.bind(null, 'not(contains(name,"W"))')).to.not.throw('Expected');
+      expect(query.bind(null, 'not(startsWith(name,"W"))')).to.not.throw('Expected');
+      expect(query.bind(null, 'not(endsWith(name,"W"))')).to.not.throw('Expected');
+      expect(query.bind(null, 'not(eq(name,"William"))')).to.throw('Expected');
+      expect(query.bind(null, 'not(gte(name,"William"))')).to.throw('Expected');
+      expect(query.bind(null, 'not(gt(name,"William"))')).to.throw('Expected');
+      expect(query.bind(null, 'not(lte(name,"William"))')).to.throw('Expected');
+      expect(query.bind(null, 'not(lt(name,"William"))')).to.throw('Expected');
+      expect(query.bind(null, 'not(ne(name,"William"))')).to.throw('Expected');
+      expect(query.bind(null, 'not(size(name,"William"))')).to.throw('Expected');
+      expect(query.bind(null, 'not(in(name,"William"))')).to.throw('Expected');
+      expect(query.bind(null, 'not(nin(name,"William"))')).to.throw('Expected');
+      expect(query.bind(null, 'not(all(name,"William"))')).to.throw('Expected');
+      expect(query.bind(null, 'not(and(name,"William"))')).to.throw('Expected');
+      expect(query.bind(null, 'not(or(name,"William"))')).to.throw('Expected');
+      expect(query.bind(null, 'not(regex(name,"William"))')).to.throw('Expected');
+      expect(query.bind(null, 'not(where(name,"William"))')).to.throw('Expected');
+      expect(query.bind(null, 'not(text(name,"William"))')).to.throw('Expected');
+      expect(query.bind(null, 'not(mod(name,"William"))')).to.throw('Expected');
+      expect(query.bind(null, 'not(elemMatch(name,"William"))')).to.throw('Expected');
+      expect(query.bind(null, 'not(exists(name,"William"))')).to.throw('Expected');
+      expect(query.bind(null, 'not(type(name,"William"))')).to.throw('Expected');
+    });
+    it('should make contains use a native regex', function () {
+      expect(query('not(contains(name,"W"))')).to.deep.eql({
+        name: { $not: /W/ }
+      });
+    });
+    it('should make startsWith use a native regex', function () {
+      expect(query('not(startsWith(name,"W"))')).to.deep.eql({
+        name: { $not: /^W/ }
+      });
+    });
+    it('should make endsWith use a native regex', function () {
+      expect(query('not(endsWith(name,"W"))')).to.deep.eql({
+        name: { $not: /W$/ }
+      });
+    });
+    it('should escape reserved regex chars', function () {
+      expect(query('not(contains(name, "^W.*$"))')).to.deep.eql({
+        name: { $not: /\^W\.\*\$/ }
+      });
+    });
+  });
+
   describe('type operator', function() {
     it('should accept integers as identifiers', function () {
       expect(query('type(name,-1)')).to.deep.eql({name: { $type: -1 }});
