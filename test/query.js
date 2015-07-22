@@ -97,6 +97,12 @@ describe('query', function() {
           .to.throw('regex operator is disabled');
         expect(query.bind(null, 'eq(tags,"nodejs")', {disabledOperators:['eq']}))
           .to.throw('eq operator is disabled');
+        expect(query.bind(null, 'contains(tags,"nodejs")', {disabledOperators:['contains']}))
+          .to.throw('contains operator is disabled');
+        expect(query.bind(null, 'startsWith(tags,"nodejs")', {disabledOperators:['startsWith']}))
+          .to.throw('startsWith operator is disabled');
+        expect(query.bind(null, 'endsWith(tags,"nodejs")', {disabledOperators:['endsWith']}))
+          .to.throw('endsWith operator is disabled');
       });
     });
   });
