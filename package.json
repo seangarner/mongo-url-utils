@@ -1,6 +1,6 @@
 {
   "name": "mongo-url-utils",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "url parser utilities for connecting with mongodb",
   "main": "lib/mongo-url.js",
   "scripts": {
