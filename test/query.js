@@ -105,6 +105,52 @@ describe('query', function() {
           .to.throw('endsWith operator is disabled');
       });
     });
+
+    describe('caseInsensitiveOperators', function() {
+
+      it('should throw an error when false and `i` switch is used', function () {
+        expect(query.bind(null, 'eq(tags,"node",i)', {caseInsensitiveOperators:false})).to.throw('i switch is disabled for eq');
+        expect(query.bind(null, 'ne(tags,"node",i)', {caseInsensitiveOperators:false})).to.throw('i switch is disabled for ne');
+        expect(query.bind(null, 'startsWith(tags,"node",i)', {caseInsensitiveOperators:false})).to.throw('i switch is disabled for startsWith');
+        expect(query.bind(null, 'endsWith(tags,"node",i)', {caseInsensitiveOperators:false})).to.throw('i switch is disabled for endsWith');
+        expect(query.bind(null, 'contains(tags,"node",i)', {caseInsensitiveOperators:false})).to.throw('i switch is disabled for contains');
+      });
+
+      it('should default to off', function () {
+        expect(query.bind(null, 'eq(tags,"node",i)')).to.throw('i switch is disabled for eq');
+        expect(query.bind(null, 'ne(tags,"node",i)')).to.throw('i switch is disabled for ne');
+        expect(query.bind(null, 'startsWith(tags,"node",i)')).to.throw('i switch is disabled for startsWith');
+        expect(query.bind(null, 'endsWith(tags,"node",i)')).to.throw('i switch is disabled for endsWith');
+        expect(query.bind(null, 'contains(tags,"node",i)')).to.throw('i switch is disabled for contains');
+      });
+
+      it('should make the operator return a "safe" $regex operation', function () {
+        expect(query('eq(tags,"NODE",i)', {caseInsensitiveOperators:true})).to.deep.eql({
+          tags: /^NODE$/i
+        });
+        expect(query('ne(tags,"NODE",i)', {caseInsensitiveOperators:true})).to.deep.eql({
+          tags: {$not: /^NODE$/i}
+        });
+        expect(query('startsWith(tags,"NODE",i)', {caseInsensitiveOperators:true})).to.deep.eql({
+          tags: {$regex: '^NODE', $options: 'i'}
+        });
+        expect(query('not(startsWith(tags,"NODE",i))', {caseInsensitiveOperators:true})).to.deep.eql({
+          tags: {$not: /^NODE/i}
+        });
+        expect(query('endsWith(tags,"NODE",i)', {caseInsensitiveOperators:true})).to.deep.eql({
+          tags: {$regex: 'NODE$', $options: 'i'}
+        });
+        expect(query('not(endsWith(tags,"NODE",i))', {caseInsensitiveOperators:true})).to.deep.eql({
+          tags: {$not: /NODE$/i}
+        });
+        expect(query('contains(tags,"NODE",i)', {caseInsensitiveOperators:true})).to.deep.eql({
+          tags: {$regex: 'NODE', $options: 'i'}
+        });
+        expect(query('not(contains(tags,"NODE",i))', {caseInsensitiveOperators:true})).to.deep.eql({
+          tags: {$not: /NODE/i}
+        });
+      });
+    });
   });
 
   describe('regex operator', function() {
