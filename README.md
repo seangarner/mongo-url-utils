@@ -141,7 +141,17 @@ full `$regex` powers (because `$regex` is the only way of achieving this in mong
 
   - `eq(tags, 'NODE', i)` matches Node, NODE, node, NoDe, etc
 
-Also supported with `ne`, `startsWith`, `endsWith` and `contains`.
+Also supported with `ne`, `startsWith`, `endsWith` and `contains`, but must be enabled using the
+`disabledOperators` query option as the default is to disable this feature.
+
+```js
+var options = {
+  query: {
+    caseInsensitiveOperators: true
+  }
+};
+mongoUrlUtils({query: 'regex(email,"Person@Example.Com",i)'}, options);
+```
 
 #### mongo types
 The `type()` query operator allows either integer identifiers as per the mongodb documentation.  For
