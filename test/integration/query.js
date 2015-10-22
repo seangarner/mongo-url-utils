@@ -8,11 +8,14 @@ var tests = [
   ['eq(closed,"true")',                                      []],
   ['eq(closed,true)',                                        [3]],
   ['eq(grades.score,5)',                                     [4,7,8]],
+  ['eq(name,"WEST AND SONS")',                               []],
+  ['eq(name,"WEST AND SONS", i)',                            [1]],
   ['gte(id,6)',                                              [6,7,8,9,10]],
   ['gt(id,6)',                                               [7,8,9,10]],
   ['lte(id,3)',                                              [1,2,3]],
   ['lt(id,3)',                                               [1,2]],
-  ['ne(closed,true)',                                        [1,2,4,5,6,7,8,9,10]],
+  ['ne(name,"WEST AND SONS")',                               [1,2,3,4,5,6,7,8,9,10]],
+  ['ne(name,"WEST AND SONS",i)',                             [2,3,4,5,6,7,8,9,10]],
   ['and(eq(grades.score,5),eq(borough,"Buckinghamshire"))',  [4,8]],
   ['or(eq(id,1),eq(borough,"Buckinghamshire"))',             [1,4,5,8]],
   ['or(eq(id,1),and(gt(id,5),lt(id,7)))',                    [1,6]],
@@ -30,13 +33,19 @@ var tests = [
   ['text("& son")',                                          [1]],
   ['text("& son", "es")',                                    []],
   ['endsWith(borough,"shire")',                              [3,4,5,6,7,8,10]],
+  ['endsWith(borough,"SHIRE",i)',                            [3,4,5,6,7,8,10]],
   ['endsWith(borough,"s.*e")',                               []],
   ['startsWith(name,"W")',                                   [1,7]],
+  ['startsWith(name,"w",i)',                                 [1,7]],
   ['contains(name,"and")',                                   [1,3,5,6,8,10]],
+  ['contains(name,"AND",i)',                                 [1,3,5,6,8,10]],
   ['contains(name,".*and.*")',                               []],
   ['not(startsWith(name,"W"))',                              [2,3,4,5,6,8,9,10]],
+  ['not(startsWith(name,"w",i))',                            [2,3,4,5,6,8,9,10]],
   ['not(endsWith(borough,"shire"))',                         [1,2,9]],
+  ['not(endsWith(borough,"SHIRE",i))',                       [1,2,9]],
   ['not(contains(name,"and"))',                              [2,4,7,9]],
+  ['not(contains(name,"AND",i))',                            [2,4,7,9]],
   ['type(name,String)',                                      [1,2,3,4,5,6,7,8,9,10]],
   ['type(name,Object)',                                      []],
   ['type(closed,Boolean)',                                   [3,6]],
@@ -78,7 +87,7 @@ describe('query integration test:', function() {
   tests.forEach(function (test) {
     var q = test[0];
     it(q, function (done) {
-      var qry = query(q);
+      var qry = query(q, {caseInsensitiveOperators: true});
       if (DEBUG) console.dir(query(q));
       docs.find(qry, {sort: {id: 1}}).toArray(function (err, docs) {
         if (err) return done(err);

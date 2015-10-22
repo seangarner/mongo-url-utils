@@ -2,6 +2,7 @@
   //TODO: disabled presets (e.g. mongo 2.2/2.6/3.0)
   //TODO: determine dependencies automatically
   if (!Array.isArray(options.disabledOperators)) options.disabledOperators = [];
+  if (options.caseInsensitiveOperators === undefined) options.caseInsensitiveOperators = false;
 
   function collect(head, tail) {
     var res = [head];
@@ -9,6 +10,17 @@
       res.push(tail[i][2]);
     }
     return res;
+  }
+
+  function contains(a, v) {
+    return (Array.isArray(a) && a.indexOf(v) > -1);
+  }
+
+  function uniq(a) {
+    return a.reduce(function (memo, v) {
+      if (!contains(memo, v)) memo.push(v);
+      return memo;
+    }, []);
   }
 
   function set(o, p, v) {
@@ -25,14 +37,31 @@
       throw new Error(keyword + ' operator is disabled');
     }
   }
+
+  function assertCanWithSwitches(operator, switches) {
+    if (switches === null) return true;
+    switches.forEach(function (sw) {
+      switch (sw) {
+      case 'i':
+        if (!options.caseInsensitiveOperators) {
+          throw new Error(sw + ' switch is disabled for ' + operator + ' operator');
+        }
+        break;
+      default:
+        throw new Error(sw + ' switch is unrecognised for ' + operator + ' operator');
+      }
+    });
+  }
 }
 
 start
   = Query
 
 Query
-  = ScalarComparison
+  = Eq
+  / ScalarComparison
   / LogicalComparison
+  / Ne
   / ArrayComparison
   / Exists
   / ElemMatch
@@ -50,13 +79,16 @@ Query
   //TODO: /regex/ (can't use $regex with $in/$nin)
 
 ScalarComparisonOperator
-  = "eq"
-  / "gte"
+  = "gte"
   / "gt"
   / "lte"
   / "lt"
   / "ne"
   / "size"
+
+EqualityComparisonOperator
+  = "eq"
+  / "ne"
 
 ArrayComparisonOperator
   = "in"
@@ -94,37 +126,78 @@ Regex
     return set({}, prop, {$regex: pattern});
   }
 
-StartsWith
-  = "startsWith(" __ prop:Property __ "," __ value:Scalar __ ")" {
-    assertCan('startsWith');
-    return set({}, prop, {$regex: '^' + escapeRegex(value)});
+Eq
+  = "eq(" __ prop:Property __ "," __ value:Scalar __ switches:Switches? __ ")" {
+    var child = {};
+    assertCan('eq');
+    if (switches) {
+      assertCanWithSwitches('eq', switches);
+      child = new RegExp('^' + escapeRegex(value) + '$', switches);
+    } else {
+      child = {$eq: value};
+    }
+    return set({}, prop, child);
   }
-  / "not(startsWith(" __ prop:Property __ "," __ value:Scalar __ "))" {
+
+Ne
+  = "ne(" __ prop:Property __ "," __ value:Scalar __ switches:Switches? __ ")" {
+    var child = {};
+    assertCan('ne');
+    if (switches) {
+      assertCanWithSwitches('ne', switches);
+      child = {$not: new RegExp('^' + escapeRegex(value) + '$', switches)};
+    } else {
+      child = set({}, '$ne', value);
+    }
+    return set({}, prop, child);
+  }
+
+StartsWith
+  = "startsWith(" __ prop:Property __ "," __ value:Scalar __ switches:Switches? __ ")" {
+    assertCan('startsWith');
+    assertCanWithSwitches('startsWith', switches);
+    value = {$regex: '^' + escapeRegex(value)};
+    if (contains(switches, 'i')) value.$options = 'i';
+    return set({}, prop, value);
+  }
+  / "not(startsWith(" __ prop:Property __ "," __ value:Scalar __ switches:Switches? __ "))" {
     assertCan('startsWith');
     assertCan('not');
-    return set({}, prop, {$not: new RegExp('^' + escapeRegex(value))});
+    assertCanWithSwitches('startsWith', switches);
+    var flags = (switches || []).join('');
+    return set({}, prop, {$not: new RegExp('^' + escapeRegex(value), flags)});
   }
 
 EndsWith
-  = "endsWith(" __ prop:Property __ "," __ value:Scalar __ ")" {
+  = "endsWith(" __ prop:Property __ "," __ value:Scalar __ switches:Switches? __ ")" {
     assertCan('endsWith');
-    return set({}, prop, {$regex: escapeRegex(value) + '$'});
+    assertCanWithSwitches('endsWith', switches);
+    value = {$regex: escapeRegex(value) + '$'};
+    if (contains(switches, 'i')) value.$options = 'i';
+    return set({}, prop, value);
   }
-  / "not(endsWith(" __ prop:Property __ "," __ value:Scalar __ "))" {
+  / "not(endsWith(" __ prop:Property __ "," __ value:Scalar __ switches:Switches? __ "))" {
     assertCan('endsWith');
     assertCan('not');
-    return set({}, prop, {$not: new RegExp(escapeRegex(value) + '$')});
+    assertCanWithSwitches('endsWith', switches);
+    var flags = (switches || []).join('');
+    return set({}, prop, {$not: new RegExp(escapeRegex(value) + '$', flags)});
   }
 
 Contains
-  = "contains(" __ prop:Property __ "," __ value:Scalar __ ")" {
+  = "contains(" __ prop:Property __ "," __ value:Scalar __ switches:Switches? __ ")" {
     assertCan('contains');
-    return set({}, prop, {$regex: escapeRegex(value)});
+    assertCanWithSwitches('contains', switches);
+    value = {$regex: escapeRegex(value)};
+    if (contains(switches, 'i')) value.$options = 'i';
+    return set({}, prop, value);
   }
-  / "not(contains(" __ prop:Property __ "," __ value:Scalar __ "))" {
+  / "not(contains(" __ prop:Property __ "," __ value:Scalar __ switches:Switches? __ "))" {
     assertCan('contains');
     assertCan('not');
-    return set({}, prop, {$not: new RegExp(escapeRegex(value))});
+    assertCanWithSwitches('contains', switches);
+    var flags = (switches || []).join('');
+    return set({}, prop, {$not: new RegExp(escapeRegex(value), flags)});
   }
 
 Where
@@ -183,6 +256,12 @@ Type
     if (typeof id === 'string') id = typeMap[id];
     if (id < -1 || id > 254) throw new Error('Expected number between -1 and 254');
     return set({}, prop, {$type: id});
+  }
+
+// switches used by eq, ne, contains, startswith, endswith
+Switches
+  = "," __ switches:[i]+ __? {
+    return uniq(switches);
   }
 
 MongoType

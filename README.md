@@ -134,6 +134,25 @@ contains    | `contains(borough, "shire")`
 The extra operators also support `$not`.  For example `not(contains(borough, "shire"))` would
 find the docs in which `borough` does not contain `shire`.  
 
+#### case insensitive matching
+Some operators support the `i` flag to denote that the operator should match the value case
+insensitively.  This is useful if you want to enable case insensitive match without allowing
+full `$regex` powers (because `$regex` is the only way of achieving this in mongo).
+
+  - `eq(tags, 'NODE', i)` matches Node, NODE, node, NoDe, etc
+
+Also supported with `ne`, `startsWith`, `endsWith` and `contains`, but must be enabled using the
+`disabledOperators` query option as the default is to disable this feature.
+
+```js
+var options = {
+  query: {
+    caseInsensitiveOperators: true
+  }
+};
+mongoUrlUtils({query: 'regex(email,"Person@Example.Com",i)'}, options);
+```
+
 #### mongo types
 The `type()` query operator allows either integer identifiers as per the mongodb documentation.  For
 convinience it also maps the following types to their ids: `Double`, `String`, `Object`, `Array`,
