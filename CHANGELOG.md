@@ -1,6 +1,6 @@
 # mongo-url-parser changelog
 
-## NEXT MINOR
+## 1.2.0 (2015/10/22)
 
   - add `caseInsensitiveOperators` `query` option
     + enables case insensitive matching for `eq`, `ne`, `contains`, `startsWith`, and `endsWith`
