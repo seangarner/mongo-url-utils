@@ -65,7 +65,10 @@ lint:
 	@echo -----------------
 	$(NODE) $(JSHINT) $(TESTS)
 
-release: lint build test integration-test
+safe:
+	nsp check
+
+release: lint build test integration-test safe
 	@echo ------------------------------------------
 	@echo - ready to bump versions and npm release -
 	@echo ------------------------------------------
