@@ -10,6 +10,7 @@ var tests = [
   ['eq(grades.score,5)',                                     [4,7,8]],
   ['eq(name,"WEST AND SONS")',                               []],
   ['eq(name,"WEST AND SONS", i)',                            [1]],
+  ['eq(grades.date,Date(2015-04-28T05:12:19.117Z))',         [1]],
   ['gte(id,6)',                                              [6,7,8,9,10]],
   ['gt(id,6)',                                               [7,8,9,10]],
   ['lte(id,3)',                                              [1,2,3]],
@@ -17,6 +18,8 @@ var tests = [
   ['ne(name,"WEST AND SONS")',                               [1,2,3,4,5,6,7,8,9,10]],
   ['ne(name,"WEST AND SONS",i)',                             [2,3,4,5,6,7,8,9,10]],
   ['and(eq(grades.score,5),eq(borough,"Buckinghamshire"))',  [4,8]],
+  ['and(gt(grades.date,Date(2015-04-28T12:00:00Z)),' +
+   'lte(grades.date,Date(2015-04-29Z)))',                    [1,2,6,7,8,10]],
   ['or(eq(id,1),eq(borough,"Buckinghamshire"))',             [1,4,5,8]],
   ['or(eq(id,1),and(gt(id,5),lt(id,7)))',                    [1,6]],
   ['size(grades,4)',                                         [1,7]],
@@ -24,6 +27,8 @@ var tests = [
   ['elemMatch(grades,eq(score,2))',                          [2,3,4,7]],
   ['regex(address.street,".*Road.*")',                       [3,4]],
   ['in(restaurant_id,["8165423","5827429"])',                [2,6]],
+  ['in(grades.date,[Date(2015-04-28T10:30:00.030Z),'+
+    'Date(2015-04-28T10:37:11.243Z)])',                      [1,3]],
   ['nin(id,[1,2,3,4,5])',                                    [6,7,8,9,10]],
   ['mod(id,5,1)',                                            [1,6]],
   ['where("parseInt(this.restaurant_id, 10) === 5827429")',  [6]],
@@ -60,6 +65,8 @@ var query = mongoUrl.query;
 const URL = process.env.MONGO_URL || 'mongodb://localhost:27017/test?nativeParser=false';
 const DEBUG = process.env.DEBUG;
 
+var getTestAsset = require('../tools/get-test-asset');
+
 var docs;
 before(function (done) {
   MongoClient.connect(URL, {}, function (err, db) {
@@ -79,7 +86,7 @@ after(function (done) {
 
 describe('query integration test:', function() {
 
-  var data = require('../assets/test_data.json');
+  var data = getTestAsset('test_data.json');
   before(function (done) {
     docs.insert(data, done);
   });
