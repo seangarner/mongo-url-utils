@@ -1,5 +1,10 @@
 # mongo-url-parser changelog
 
+## UNRELEASED
+
+  - add native Date type support for query operators (#8)
+    + e.g. `?query=gt(dob,Date(2009-11-08T15:00:56.426Z))`
+
 ## 1.2.0 (2015/10/22)
 
   - add `caseInsensitiveOperators` `query` option
