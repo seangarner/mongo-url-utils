@@ -45,6 +45,10 @@ var tests = [
   [
     'query=gt(id,1)&limit=2',
     [2,3]
+  ],
+  [
+    'query=or(gt(grades.date,Date(2015-04-28T17:00Z)),eq(restaurant_id,"9353217"))',
+    [1,7,10]
   ]
 ];
 
@@ -54,6 +58,8 @@ var parse = require('../..');
 
 const URL = process.env.MONGO_URL || 'mongodb://localhost:27017/test?nativeParser=false';
 const DEBUG = process.env.DEBUG;
+
+var getTestAsset = require('../tools/get-test-asset');
 
 var docs;
 before(function (done) {
@@ -74,7 +80,7 @@ after(function (done) {
 
 describe('mongo-url integration test:', function() {
 
-  var data = require('../assets/test_data.json');
+  var data = getTestAsset('test_data.json');
   data.forEach(function (doc) {
     before(function (done) {
       docs.insert(doc, done);

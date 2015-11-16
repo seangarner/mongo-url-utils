@@ -52,6 +52,12 @@
       }
     });
   }
+
+  function assertDateIsValid(date, dateTimeStr) {
+    if (isNaN(date.getTime())) {
+      throw new Error(dateTimeStr + ' is not a valid date time string');
+    }
+  }
 }
 
 start
@@ -292,6 +298,7 @@ Scalar "scalar value"
   = String
   / Number
   / Boolean
+  / Date
   / "null" __  { return null;  }
 
 Boolean "boolean"
@@ -340,6 +347,13 @@ Int "integer"
   / "-" Digit19 Digits
   / "-" Digit
 
+Date "date"
+  = "Date(" dateTimeStr:$(EcmaDateTime) ")" {
+      var date = new Date(dateTimeStr);
+      assertDateIsValid(date, dateTimeStr);
+      return date;
+    }
+
 ParsedInt "integer"
   = n:$(Int) {
     return parseInt(n, 10);
@@ -371,3 +385,50 @@ __ "whitespace"
 
 Whitespace
   = " "
+
+/*
+  The following productions parse valid and invalid ECMAScript date time strings.
+
+  ECMAScript 5.1 implements a date time string format that is a simplification of the ISO 8601
+  Extended Format.
+
+  See http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.1.15 for more information on this
+  specification.
+ */
+EcmaDateTime "date time"
+  = EcmaDate "T" EcmaTime EcmaTimeZoneOffset?
+  / EcmaDate EcmaZuluTimeZone?
+
+EcmaTime "time"
+  = EcmaTimeHours ":" EcmaTimeMinutes (":" EcmaTimeSeconds ("." EcmaTimeMilliseconds)?)?
+
+EcmaTimeHours "hours"
+  = Digit Digit
+
+EcmaTimeMinutes "minutes"
+  = Digit Digit
+
+EcmaTimeSeconds "seconds"
+  = Digit Digit
+
+EcmaTimeMilliseconds "milliseconds"
+  = Digit Digit Digit
+
+EcmaZuluTimeZone "zulu timezone"
+  = "Z"
+
+EcmaTimeZoneOffset "timezone offset"
+  = EcmaZuluTimeZone
+  / [+-] EcmaTimeHours ":" EcmaTimeMinutes
+
+EcmaDate "date"
+  = EcmaDateYear ("-" EcmaDateMonth ("-" EcmaDateDay)?)?
+
+EcmaDateYear "year"
+  = Digit Digit Digit Digit
+
+EcmaDateMonth "month"
+  = Digit Digit
+
+EcmaDateDay "day"
+  = Digit Digit

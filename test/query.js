@@ -41,6 +41,52 @@ describe('query', function() {
       });
     });
 
+    describe('should parse date time strings as a native Date', function () {
+      var tests = [
+        // dates
+        {format: 'YYYY', date: '2015'},
+        {format: 'YYYY-MM', date: '2015-11'},
+        {format: 'YYYY-MM-DD', date: '2015-11-12'},
+
+        // dates with time zone offsets (zulu only)
+        {format: 'YYYYZ', date: '2015Z'},
+        {format: 'YYYY-MMZ', date: '2015-11Z'},
+        {format: 'YYYY-MM-DDZ', date: '2015-11-12Z'},
+
+        // date times
+        {format: 'YYYY-MM-DDTHH:mm', date: '2015-11-12T03:24'},
+        {format: 'YYYY-MM-DDTHH:mm:ss', date: '2015-11-12T03:24:55'},
+        {format: 'YYYY-MM-DDTHH:mm:ss.sss', date: '2015-11-12T03:24:55.123'},
+
+        // date times with time zone offsets (zulu and offset)
+        {format: 'YYYY-MM-DDTHH:mmZ', date: '2015-11-12T03:24Z'},
+        {format: 'YYYY-MM-DDTHH:mm:ssZ', date: '2015-11-12T03:24:55Z'},
+        {format: 'YYYY-MM-DDTHH:mm:ss.sssZ', date: '2015-11-12T03:24:55.123Z'},
+
+        {format: 'YYYY-MM-DDTHH:mm+HH:mm', date: '2015-11-12T03:24+06:00'},
+        {format: 'YYYY-MM-DDTHH:mm:ss+HH:mm', date: '2015-11-12T03:24:55+06:00'},
+        {format: 'YYYY-MM-DDTHH:mm:ss.sss+HH:mm', date: '2015-11-12T03:24:55.123+06:00'},
+
+        {format: 'YYYY-MM-DDTHH:mm-HH:mm', date: '2015-11-12T03:24-06:00'},
+        {format: 'YYYY-MM-DDTHH:mm:ss-HH:mm', date: '2015-11-12T03:24:55-06:00'},
+        {format: 'YYYY-MM-DDTHH:mm:ss.sss-HH:mm', date: '2015-11-12T03:24:55.123-06:00'},
+      ];
+
+      tests.forEach(function (test) {
+        it(test.format, function () {
+          expect(query('eq(date,Date(' + test.date + '))')).to.deep.eql({
+            date: {$eq: new Date(test.date)}
+          });
+        });
+      });
+
+      it('but should throw an error when provided an invalid date', function () {
+        var date = '2015-03-32T03:24Z';
+        var shouldThrow = function () { return query('eq(date,Date(' + date + '))'); };
+        expect(shouldThrow).to.throw(date + ' is not a valid date time string');
+      });
+    });
+
     it('should support $eq', function () {
       expect(query('eq(tags,"node")')).to.deep.eql({
         tags: { $eq: 'node' }

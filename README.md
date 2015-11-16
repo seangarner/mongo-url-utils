@@ -7,7 +7,7 @@ Utilities to parse url parameters into objects that can be passed to mongo funct
 ## compatibility
 Currently depends on mongo 2.6 for the eq support.  PR welcome for <2.6 support.
 
-Tested against node 0.10, 0.12 and latest iojs.
+Tested against node 0.10, 0.12, and 4.2 LTS.
 
 
 ## example
@@ -132,7 +132,17 @@ endsWith    | `endsWith(address.street, "Road")`
 contains    | `contains(borough, "shire")`
 
 The extra operators also support `$not`.  For example `not(contains(borough, "shire"))` would
-find the docs in which `borough` does not contain `shire`.  
+find the docs in which `borough` does not contain `shire`.
+
+#### data type support
+
+In addition to the string, number, boolean and `null` types, the query parser implements support for native Date parsing.
+
+type | format | parsed as  | example usage
+-----|--------|------------|----------------------------------------------------------------------------
+date | [Date Time String][ecma-datetime] | [Date][mdn-date]  | `gt(grades.date,Date(2015-04-28T17:00Z))`
+
+Please submit pull requests for additional data types, particularly those that are found within the [MongoDB Extended JSON](https://docs.mongodb.org/manual/reference/mongodb-extended-json/) specification.
 
 #### case insensitive matching
 Some operators support the `i` flag to denote that the operator should match the value case
@@ -241,3 +251,6 @@ var options = {
 mongoUrlUtils('fields=+id,-_id', options); // throws an Error
 mongoUrlUtils('fields=%2Bid,-_id', options); // works as expected
 ```
+
+[mdn-date]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date
+[ecma-datetime]: http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.1.15
