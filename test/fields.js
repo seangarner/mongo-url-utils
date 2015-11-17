@@ -73,4 +73,59 @@ describe('fields', function() {
     expect(mongoUrl.fields.bind(null, ' include', {strictEncoding: true})).to.throw('Expected "+" or "-"; disable strictEncoding to allow space in place of +');
   });
 
+  it('should recognise an elemMatch query', function () {
+    expect(mongoUrl.fields('elemMatch(students,eq(school,102))')).to.eql({
+      students:{
+        $elemMatch:{
+          school:{
+            $eq:102
+          }
+        }
+      }
+    });
+  });
+
+  it('should mix elemMatch and inclusive projection', function () {
+    var expected = {
+      name: 1,
+      students:{
+        $elemMatch:{
+          school:{
+            $eq:102
+          }
+        }
+      }
+    };
+    expect(mongoUrl.fields('+name,elemMatch(students,eq(school,102))')).to.eql(expected);
+    expect(mongoUrl.fields('elemMatch(students,eq(school,102)),+name')).to.eql(expected);
+  });
+
+  it('should mix elemMatch and exclusive projection', function () {
+    var expected = {
+      name: 0,
+      students:{
+        $elemMatch:{
+          school:{
+            $eq:102
+          }
+        }
+      }
+    };
+    expect(mongoUrl.fields('-name,elemMatch(students,eq(school,102))')).to.eql(expected);
+  });
+
+  it.skip('should mix elemMatch and exclusive projection when elemMatch is first', function () {
+    var expected = {
+      name: 0,
+      students:{
+        $elemMatch:{
+          school:{
+            $eq:102
+          }
+        }
+      }
+    };
+    expect(mongoUrl.fields('elemMatch(students,eq(school,102)),-name')).to.eql(expected);
+  });
+
 });
