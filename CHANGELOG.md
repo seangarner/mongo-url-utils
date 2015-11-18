@@ -1,9 +1,10 @@
 # mongo-url-parser changelog
 
-## UNRELEASED
+## 1.3.0 (2015/11/18)
 
   - add native Date type support for query operators (#8)
     + e.g. `?query=gt(dob,Date(2009-11-08T15:00:56.426Z))`
+  - add `elemMatch` field operator support (#9)
 
 ## 1.2.0 (2015/10/22)
 
