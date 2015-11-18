@@ -201,6 +201,20 @@ time you can mix `-` and `+`.
 GET /people?fields=-_id,+firstName,+address.country
 ```
 
+The following projection operators are also supported:
+
+operator               | example
+---------------------- | ----------------------------------
+[elemMatch-projection] | `elemMatch(students,eq(school,102))`
+
+Projection operators can be mixed with projection parameters, however it's difficult to prevent
+mixed exclusive and exclusive parameters with operators so it's recommended that operators come last
+in the fields string.  e.g.
+
+```
+GET /courses?fields=-id,+title,elemMatch(students,eq(gender,"female"))
+```
+
 ### `limit`
 Limit how many documents are returned.
 
@@ -252,5 +266,6 @@ mongoUrlUtils('fields=+id,-_id', options); // throws an Error
 mongoUrlUtils('fields=%2Bid,-_id', options); // works as expected
 ```
 
+[elemMatch-projection]: https://docs.mongodb.org/manual/reference/operator/projection/elemMatch/
 [mdn-date]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date
 [ecma-datetime]: http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.1.15
