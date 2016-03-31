@@ -1,5 +1,10 @@
 # mongo-url-parser changelog
 
+## 1.3.1 (2016/03/31)
+
+  - updated pegjs dependency to latest (#12)
+    + thanks greenkeeper :palm_tree:!
+
 ## 1.3.0 (2015/11/18)
 
   - add native Date type support for query operators (#8)
