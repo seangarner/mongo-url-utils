@@ -19,9 +19,9 @@ build:
 	@echo -----------------------------
 	@echo - BUILDING PARSERS FROM SRC -
 	@echo -----------------------------
-	$(PEGJS) --optimize speed src/query.pegjs lib/query.js
-	$(PEGJS) --optimize speed src/fields.pegjs lib/fields.js
-	$(PEGJS) --optimize speed src/sort.pegjs lib/sort.js
+	$(PEGJS) --output lib/query.js --optimize speed src/query.pegjs
+	$(PEGJS) --output lib/fields.js --optimize speed src/fields.pegjs
+	$(PEGJS) --output lib/sort.js --optimize speed src/sort.pegjs
 
 
 build-dev:
