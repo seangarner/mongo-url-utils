@@ -1,5 +1,9 @@
 # mongo-url-parser changelog
 
+## 1.3.2 (2016/08/22)
+
+  - updated pegjs dep to 0.10.0 (#28)
+
 ## 1.3.1 (2016/03/31)
 
   - updated pegjs dependency to latest (#12)
