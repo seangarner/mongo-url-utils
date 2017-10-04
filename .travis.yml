@@ -1,8 +1,10 @@
 language: node_js
 sudo: required
 node_js:
-  - stable
-  - '4'
+  - "node"
+  - "lts/*"
+  - "6"
+  - "4" 
 #services:
 #  - mongodb
 before_install:
