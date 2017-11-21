@@ -79,6 +79,7 @@ Query
   / Text
   / Where
   / Type
+  / Not
 
   //TODO: $not
   //TODO: $nor
@@ -105,10 +106,23 @@ LogicalComparisonOperator
   = "and"
   / "or"
 
+NegatableComparison
+  = ScalarComparison
+  / ArrayComparison
+  / Eq
+  / Ne
+
 LogicalComparison
   = op:$LogicalComparisonOperator "(" __ head:Query __ tail:("," __ Query)* ")" {
     assertCan(op);
     return set({}, '$' + op, collect(head, tail));
+  }
+
+Not
+  = "not(" __ expression:NegatableComparison __ ")" {
+    assertCan('not');
+    Object.keys(expression).forEach((key) => expression[key] = {$not: expression[key]});
+    return expression;
   }
 
 ScalarComparison

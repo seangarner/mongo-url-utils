@@ -495,22 +495,9 @@ describe('query', function() {
   });
 
   describe('not operator', function() {
-    it('should only support contains, startsWith & endsWith', function () {
-      expect(query.bind(null, 'not(contains(name,"W"))')).to.not.throw('Expected');
-      expect(query.bind(null, 'not(startsWith(name,"W"))')).to.not.throw('Expected');
-      expect(query.bind(null, 'not(endsWith(name,"W"))')).to.not.throw('Expected');
-      expect(query.bind(null, 'not(eq(name,"William"))')).to.throw('Expected');
-      expect(query.bind(null, 'not(gte(name,"William"))')).to.throw('Expected');
-      expect(query.bind(null, 'not(gt(name,"William"))')).to.throw('Expected');
-      expect(query.bind(null, 'not(lte(name,"William"))')).to.throw('Expected');
-      expect(query.bind(null, 'not(lt(name,"William"))')).to.throw('Expected');
-      expect(query.bind(null, 'not(ne(name,"William"))')).to.throw('Expected');
-      expect(query.bind(null, 'not(size(name,"William"))')).to.throw('Expected');
-      expect(query.bind(null, 'not(in(name,"William"))')).to.throw('Expected');
-      expect(query.bind(null, 'not(nin(name,"William"))')).to.throw('Expected');
-      expect(query.bind(null, 'not(all(name,"William"))')).to.throw('Expected');
-      expect(query.bind(null, 'not(and(name,"William"))')).to.throw('Expected');
-      expect(query.bind(null, 'not(or(name,"William"))')).to.throw('Expected');
+    it('should not support logical operators', function () {
+      expect(query.bind(null, 'not(and(eq(name,"William")))')).to.throw('Expected');
+      expect(query.bind(null, 'not(or(eq(name,"William")))')).to.throw('Expected');
       expect(query.bind(null, 'not(regex(name,"William"))')).to.throw('Expected');
       expect(query.bind(null, 'not(where(name,"William"))')).to.throw('Expected');
       expect(query.bind(null, 'not(text(name,"William"))')).to.throw('Expected');
@@ -518,6 +505,23 @@ describe('query', function() {
       expect(query.bind(null, 'not(elemMatch(name,"William"))')).to.throw('Expected');
       expect(query.bind(null, 'not(exists(name,"William"))')).to.throw('Expected');
       expect(query.bind(null, 'not(type(name,"William"))')).to.throw('Expected');
+    });
+    it('should negate scalar comparison operators', function () {
+      expect(query('not(eq(name,"William"))')).to.deep.eql({ name: { $not: {$eq: 'William' } } });
+      expect(query('not(gte(name,"William"))')).to.deep.eql({ name: { $not: {$gte: 'William' } } });
+      expect(query('not(gt(name,"William"))')).to.deep.eql({ name: { $not: {$gt: 'William' } } });
+      expect(query('not(lte(name,"William"))')).to.deep.eql({ name: { $not: {$lte: 'William' } } });
+      expect(query('not(lt(name,"William"))')).to.deep.eql({ name: { $not: {$lt: 'William' } } });
+      expect(query('not(ne(name,"William"))')).to.deep.eql({ name: { $not: {$ne: 'William' } } });
+      expect(query('not(size(name,"William"))')).to.deep.eql({ name: { $not: {$size: 'William' } } });
+      expect(query('not(in(name,["William"]))')).to.deep.eql({ name: { $not: {$in: ['William'] } } });
+      expect(query('not(nin(name,["William"]))')).to.deep.eql({ name: { $not: {$nin: ['William'] } } });
+      expect(query('not(all(name,["William"]))')).to.deep.eql({ name: { $not: {$all: ['William'] } } });
+    });
+    it('should nest within logical operators', function () {
+      expect(query('and(not(eq(name,"William")),not(eq(name,"Bill")))')).to.deep.eql({
+        $and: [{name:{$not:{$eq:'William'}}},{name:{$not:{$eq:'Bill'}}}]
+      });
     });
     it('should make contains use a native regex', function () {
       expect(query('not(contains(name,"W"))')).to.deep.eql({
