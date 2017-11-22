@@ -68,9 +68,11 @@ const DEBUG = process.env.DEBUG;
 var getTestAsset = require('../tools/get-test-asset');
 
 var docs;
+var close = function () {};
 before(function (done) {
   MongoClient.connect(URL, {}, function (err, db) {
     if (err) return done(err);
+    close = db.close.bind(db);
     docs = db.collection('mongo-query-test');
     docs.drop(function () {
       //ignore error dropping a collection that probably wont be there
@@ -81,7 +83,13 @@ before(function (done) {
 
 after(function (done) {
   if (DEBUG) return done();
-  docs.drop(done);
+  docs.drop(() => {
+    close(() => {
+      done();
+      // required since mocha 4 because mongo keeps sockets open even after close :| 
+      process.exit(0);
+    });
+  });
 });
 
 describe('query integration test:', function() {
