@@ -12,6 +12,7 @@ JSHINT ?= node_modules/jshint/bin/jshint
 MOCHA ?= node_modules/mocha/bin/mocha
 REPORTER ?= spec
 NODEMON ?= node_modules/nodemon/bin/nodemon.js
+NSP ?= node_modules/.bin/nsp
 
 all: build
 
@@ -66,7 +67,7 @@ lint:
 	$(NODE) $(JSHINT) $(TESTS)
 
 safe:
-	nsp check
+	$(NSP) check
 
 release: lint build test integration-test safe
 	@echo ------------------------------------------
