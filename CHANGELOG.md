@@ -1,5 +1,11 @@
 # mongo-url-parser changelog
 
+## 1.4.0 (2017/11/22)
+
+  - added support for `$not` query operator in combination with most operators
+    - some operators still unsupported
+  - updated dev deps (mocha, chai, nsp)
+
 ## 1.3.2 (2016/08/22)
 
   - updated pegjs dep to 0.10.0 (#28)

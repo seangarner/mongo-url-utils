@@ -5,9 +5,9 @@
 Utilities to parse url parameters into objects that can be passed to mongo functions.
 
 ## compatibility
-Currently depends on mongo 2.6 for the eq support.  PR welcome for <2.6 support.
+Currently depends on mongo 2.6 for the eq support.
 
-Tested against node 0.10, 0.12, and 4.2 LTS.
+Tested against node 4 LTS, 6 LTS and 8 LTS.
 
 
 ## example
@@ -109,6 +109,7 @@ $nin        | `nin(id,[1,2,3,4,5])`
 $all        | `all(address.coord,["-47.9327","-82.6261"])`
 $and        | `and(eq(grades.score,5),eq(borough,"Buckinghamshire"))`
 $or         | `or(eq(id,1),eq(borough,"Buckinghamshire"))`
+$not        | `not(size(grades,0))`
 $regex      | `regex(address.street,".*Road.*")`
 $where      | `where("parseInt(this.restaurant_id, 10) === 5827429")`
 $text       | `text("y hijos", "es")`
@@ -170,7 +171,8 @@ convinience it also maps the following types to their ids: `Double`, `String`, `
 `ScopedJavascript`, `Int32`, `Timestamp` and `Int64`.
 
 #### todo
-  - $not (is supported with `startsWith`, `endsWith` and `contains`)
+  - full `$not` support
+    - missing for `regex`, `where`, `text`, `mod`, `elemMatch`, `exists`, `type`
   - $nor
   - /regex/ (can't use $regex with $in/$nin)
 
