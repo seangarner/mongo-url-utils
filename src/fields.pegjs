@@ -10,7 +10,7 @@ start
 
 fields
   = head:including tail:("," including)* {
-    var res = {};
+    const res = {};
     res[head[0]] = head[1];
     return tail.reduce(function (memo, sort) {
       // extra [1] to skip ","
@@ -19,7 +19,7 @@ fields
     }, res);
   }
   / head:excluding tail:("," excluding)* {
-    var res = {};
+    const res = {};
     res[head[0]] = head[1];
     return tail.reduce(function (memo, sort) {
       // extra [1] to skip ","
@@ -86,13 +86,13 @@ LogicalComparison
 
 ScalarComparison
   = op:$ScalarComparisonOperator "(" __ prop:Property __ "," __ value:Scalar __ ")" {
-    var child = set({}, '$' + op, value);
+    const child = set({}, '$' + op, value);
     return set({}, prop, child);
   }
 
 ArrayComparison
   = op:$ArrayComparisonOperator "(" __ prop:Property __ "," __ values:Array __ ")" {
-    var child = set({}, '$' + op, values);
+    const child = set({}, '$' + op, values);
     return set({}, prop, child);
   }
 
@@ -124,7 +124,7 @@ Exists
 
 Type
   = "type(" __ prop:Property __ "," __ id:MongoType __ ")" {
-    var typeMap = {
+    const typeMap = {
       Double: 1,
       String: 2,
       Object: 3,
@@ -228,7 +228,7 @@ Int "integer"
 
 Date "date"
   = "Date(" dateTimeStr:$(EcmaDateTime) ")" {
-      var date = new Date(dateTimeStr);
+      const date = new Date(dateTimeStr);
       assertDateIsValid(date, dateTimeStr);
       return date;
     }

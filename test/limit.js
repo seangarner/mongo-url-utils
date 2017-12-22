@@ -1,21 +1,21 @@
-var expect = require('chai').expect;
-var mongoUrl = require('..');
-var limit = mongoUrl.limit;
+const expect = require('chai').expect;
+const mongoUrl = require('..');
+const limit = mongoUrl.limit;
 
-describe('limit', function() {
-  it('should return an integer', function () {
+describe('limit', () => {
+  it('should return an integer', () => {
     expect(limit('1')).to.equal(1);
   });
 
-  it('should throw when the input is not a string', function () {
+  it('should throw when the input is not a string', () => {
     expect(limit.bind(null, ['one'])).to.throw();
   });
 
-  it('should throw when the input number is not whole', function () {
+  it('should throw when the input number is not whole', () => {
     expect(limit.bind(null, '1.1')).to.throw();
   });
 
-  it('should throw when the input number is negative', function () {
+  it('should throw when the input number is negative', () => {
     expect(limit.bind(null, '-1')).to.throw();
   });
 });
