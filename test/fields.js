@@ -3,6 +3,10 @@ var mongoUrl = require('..');
 
 describe('fields', function() {
 
+  it('should return an error with invalid syntax', () => {
+    expect(() => mongoUrl.fields('invalid_fields')).to.throw(/^Expected/);
+  });
+
   it('should include fields prefixed with `+`', function () {
     expect(mongoUrl.fields('+name')).to.eql({name: 1});
   });

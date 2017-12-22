@@ -4,6 +4,10 @@ var query = mongoUrl.query;
 
 describe('query', function() {
 
+  it('should throw an error with invalid syntax', () => {
+    expect(() => mongoUrl.fields('invalid_query')).to.throw(/^Expected/);
+  });
+
   describe('scalar comparison operators', function() {
     it('should ignore whitespace around the arguments', function () {
       expect(query('eq( tags , "node" )')).to.deep.eql({
