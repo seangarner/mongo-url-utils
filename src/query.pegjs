@@ -1,8 +1,11 @@
 {
+  const safeRegex = require('safe-regex');
+
   //TODO: disabled presets (e.g. mongo 2.2/2.6/3.0)
   //TODO: determine dependencies automatically
   if (!Array.isArray(options.disabledOperators)) options.disabledOperators = [];
   if (options.caseInsensitiveOperators === undefined) options.caseInsensitiveOperators = false;
+  if (options.safeRegex === undefined) options.safeRegex = false;
 
   function collect(head, tail) {
     var res = [head];
@@ -56,6 +59,12 @@
   function assertDateIsValid(date, dateTimeStr) {
     if (isNaN(date.getTime())) {
       throw new Error(dateTimeStr + ' is not a valid date time string');
+    }
+  }
+
+  function assertSafeRegex(regex) {
+    if (options.safeRegex && !safeRegex(regex)) {
+      throw new Error('regex not safe; too many repetitions or star height is above 1');
     }
   }
 }
@@ -142,6 +151,7 @@ ArrayComparison
 Regex
   = "regex(" __ prop:Property __ "," __ pattern:String __ opts:("," __ [imxs]+ __)? ")" {
     assertCan('regex');
+    assertSafeRegex(pattern);
     if (opts) return set({}, prop, {$regex: pattern, $options: opts[2].join('')});
     return set({}, prop, {$regex: pattern});
   }

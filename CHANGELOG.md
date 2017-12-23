@@ -1,5 +1,10 @@
 # mongo-url-parser changelog
 
+## NEXT
+
+  - added `safeRegex` `query` option
+    + checks regex query operator values for regex which could be used as a DoS
+
 ## 1.4.0 (2017/11/22)
 
   - added support for `$not` query operator in combination with most operators

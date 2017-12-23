@@ -141,6 +141,18 @@ describe('query', () => {
   });
 
   describe('options', () => {
+    describe('safeRegex', () => {
+      it('should default to disabled', () => {
+        expect(query.bind(null, 'regex(email,"(a+){10}")')).to.not.throw();
+      });
+      it('should throw when an unsafe regex is used', () => {
+        expect(query.bind(null, 'regex(email,"(a+){10}")', {safeRegex:true})).to.throw('regex not safe');
+      });
+      it('should not throw when the regex is safe', () => {
+        expect(query.bind(null, 'regex(email,"(a){10}")', {safeRegex:true})).to.not.throw();
+      });
+    });
+
     describe('disabledOperators', () => {
       it('take an array of keywords to disable', () => {
         expect(query.bind(null, 'regex(email,".*\\\\.gmail\\\\.com")', {disabledOperators:['regex']}))

@@ -28,7 +28,8 @@
   "author": "Sean Garner <seanlgarner@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "is": "^3.0.1"
+    "is": "^3.0.1",
+    "safe-regex": "^1.1.0"
   },
   "devDependencies": {
     "in-publish": "^2.0.0",

@@ -164,6 +164,21 @@ var options = {
 mongoUrlUtils({query: 'regex(email,"Person@Example.Com",i)'}, options);
 ```
 
+#### regex safety checking
+The `regex` query operator can be dangerous allowing attackers to create an expensive expression.
+Set `safeRegex` to `true` to pass all regexes through [safe-regex](https://github.com/substack/safe-regex)
+and throw an error if an unsafe regex is sent.
+
+```js
+var options = {
+  query: {
+    safeRegex: true
+  }
+};
+mongoUrlUtils({query: 'regex(email,"(a+){10}y")'}, options);
+// throws Error
+```
+
 #### mongo types
 The `type()` query operator allows either integer identifiers as per the mongodb documentation.  For
 convinience it also maps the following types to their ids: `Double`, `String`, `Object`, `Array`,
