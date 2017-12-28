@@ -1,6 +1,6 @@
 # mongo-url-parser changelog
 
-## NEXT
+## 1.5.0 (2017/12/28)
 
   - added `safeRegex` `query` option
     + checks regex query operator values for regex which could be used as a DoS
