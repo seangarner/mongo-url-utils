@@ -70,7 +70,8 @@
 }
 
 start
-  = Query
+  = CommentedQuery
+  / Query
 
 Query
   = Eq
@@ -101,7 +102,6 @@ Query
 //TODO bitsAllSet
 //TODO bitsAnyClear
 //TODO bitsAnySet
-//TODO comment
 //TODO meta
 //TODO slice
 
@@ -131,6 +131,14 @@ NegatableComparison
   / ArrayComparison
   / Eq
   / Ne
+
+CommentedQuery
+  = comment:Comment __ "," __ query:Query {
+    return set(query, '$comment', comment);
+  }
+  / query:Query __ "," __ comment:Comment {
+    return set(query, '$comment', comment);
+  }
 
 LogicalComparison
   = op:$LogicalComparisonOperator "(" __ head:Query __ tail:("," __ Query)* ")" {
@@ -297,6 +305,12 @@ Type
     if (typeof id === 'string') id = typeMap[id];
     if (id < -1 || id > 254) throw new Error('Expected number between -1 and 254');
     return set({}, prop, {$type: id});
+  }
+
+Comment
+  = "comment(" __ value:String __ ")" {
+    assertCan('comment');
+    return value;
   }
 
 // switches used by eq, ne, contains, startswith, endswith

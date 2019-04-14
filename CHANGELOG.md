@@ -1,5 +1,9 @@
 # mongo-url-parser changelog
 
+## NEXT_MINOR
+
+  - added `comment` query operator
+
 ## 1.5.0 (2017/12/28)
 
   - added `safeRegex` `query` option

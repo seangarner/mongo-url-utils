@@ -60,7 +60,9 @@ var tests = [
   ['type(name,String)',                                      [1,2,3,4,5,6,7,8,9,10]],
   ['type(name,Object)',                                      []],
   ['type(closed,Boolean)',                                   [3,6]],
-  ['type(closed,8)',                                         [3,6]]
+  ['type(closed,8)',                                         [3,6]],
+  ['comment("123"),eq(name,"West and Sons")',                [1]],
+  ['eq(name,"West and Sons"),comment("123")',                [1]]
 ];
 
 var expect = require('chai').expect;
@@ -92,7 +94,7 @@ after(function (done) {
   docs.drop(() => {
     close(() => {
       done();
-      // required since mocha 4 because mongo keeps sockets open even after close :| 
+      // required since mocha 4 because mongo keeps sockets open even after close :|
       process.exit(0);
     });
   });

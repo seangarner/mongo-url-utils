@@ -117,6 +117,7 @@ $mod        | `mod(id,5,1)`
 $elemMatch  | `elemMatch(grades,eq(score,2))`
 $exists     | `exists(closed,false)`
 $type       | `type(name,2)` or `type(name,String)` (see Mongo Types)
+$comment    | `comment("A23"),eq(name,"West and Sons")` or `eq(name,"West and Sons"),comment("A23")`
 
 Example; only return people who are widowed or age is greater than 50 and less than 70.
 ```

@@ -630,4 +630,25 @@ describe('query', () => {
 
   });
 
+  describe('comment operator', () => {
+    it('should not be supported alone', () => {
+      expect(query.bind(null, 'comment("1234")')).to.throw('Expected');
+    });
+    it('should not be supported within logical operators', () => {
+      expect(query.bind(null, 'and(comment("1234"))')).to.throw('Expected');
+    });
+    it('should work before a query', () => {
+      expect(query('comment("1234"),and(not(eq(name,"William")),not(eq(name,"Bill")))')).to.deep.eql({
+        $comment: '1234',
+        $and: [{name:{$not:{$eq:'William'}}},{name:{$not:{$eq:'Bill'}}}]
+      });
+    });
+    it('should work after a query', () => {
+      expect(query('and(not(eq(name,"William")),not(eq(name,"Bill"))),comment("1234")')).to.deep.eql({
+        $comment: '1234',
+        $and: [{name:{$not:{$eq:'William'}}},{name:{$not:{$eq:'Bill'}}}]
+      });
+    });
+  });
+
 });
