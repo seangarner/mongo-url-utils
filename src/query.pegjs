@@ -90,9 +90,20 @@ Query
   / Type
   / Not
 
-  //TODO: $not
-  //TODO: $nor
-  //TODO: /regex/ (can't use $regex with $in/$nin)
+//TODO: /regex/ (can't use $regex with $in/$nin)
+//TODO nor
+//TODO expr
+//TODO geoIntersects
+//TODO geoWithin
+//TODO near
+//TODO nearSphere
+//TODO bitsAllClear
+//TODO bitsAllSet
+//TODO bitsAnyClear
+//TODO bitsAnySet
+//TODO comment
+//TODO meta
+//TODO slice
 
 ScalarComparisonOperator
   = "gte"
